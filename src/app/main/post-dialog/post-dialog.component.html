@@ -1,0 +1,13 @@
+<p>post-dialog works!</p>
+<input #fileInput type="file" hidden (change)="onSelectFile($event)">
+<button mat-button class="changeImg" (click)="fileInput.click()">Change Profile Photo</button>
+<img id="postImg" [src]="url" alt="">
+<form (submit)="postUp(postUpForm)" #postUpForm="ngForm">
+    <mat-form-field>
+        <input matInput name="caption" ngModel type="text" placeholder="add caption" #captionInput="ngModel">
+        <mat-error *ngIf="captionInput.invalid">Please enter a valid caption.</mat-error>
+    </mat-form-field>
+    <button color="primary" mat-button type="submit" [mat-dialog-close]="true">
+        POST</button>
+    <button color="primary" mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+</form>

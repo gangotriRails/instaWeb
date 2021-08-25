@@ -1,0 +1,9 @@
+{
+    "env": {
+    "JWT_KEY": "SECRET_HASH_KEY_FOR_JSON_WEBTOKEN",
+    "COUCH_DB_HOST": "8777f2b9-e817-4cbc-902f-e07b72b8a803-bluemix.cloudantnosqldb.appdomain.cloud",
+    "COUCH_DB_ADMIN_USERNAME": "apikey-v2-1ds84hahnrkufcpprzf7ovydh09icao4vpm3b2kptsaa",
+    "COUCH_DB_ADMIN_PASSWORD": "7aecb27e26e917c212c915d0bb91c6b4",
+    "COUCH_DB_PROVIDER": "IBM_CLOUDANT"
+    }
+  }

@@ -1,0 +1,65 @@
+<mat-toolbar class="header">
+    <h5 style="font-style: oblique;margin-left: 10%;">Instagram</h5>
+    <span class="example-spacer1"></span>
+    <button mat-icon-button  routerLink="/main">
+        <mat-icon>home</mat-icon>
+      </button>
+    <button mat-icon-button [matMenuTriggerFor]="user">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #user="matMenu">
+      <div mat-menu-item *ngIf="userIsAuthenticated">
+        <h5 class="text"> {{ userName }}</h5>
+      </div>
+      <br>
+    <div class="password-btn-group">
+      <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="viewProfile()">
+        <mat-icon class="icon"><span class="material-icons-outlined">
+          face
+          </span></mat-icon>
+        <h5 class="text">profile</h5>
+      </button>
+        <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="onLogout()">
+          <mat-icon class="icon"><span class="material-icons-outlined">
+            logout
+            </span>
+            </mat-icon>
+          <h5 class="text">Log Out</h5>
+        </button>
+    </div>
+    </mat-menu>
+  </mat-toolbar>
+  <br>
+  <br>
+  <mat-toolbar class="add" >
+    <button mat-icon-button (click)="addPost()">
+        <mat-icon><span class="material-icons-outlined">
+            add_circle
+            </span></mat-icon>
+      </button>
+  </mat-toolbar>
+  <mat-card class="userList">
+    <div class="myUser">
+    <img [src]="url" alt="hi">
+    <h4 class="name">{{userName}}</h4>
+    <a class="Switch" routerLink="/login"><h4>Switch Account</h4></a>
+  </div>
+  <div class="otherUser">
+    <h4 class="suggestion">Suggestions For You</h4>
+    <br>
+    <div *ngFor = "let allUsers of allUsers">
+      <!-- <img [src]="url" alt="hi"> -->
+      <h4>{{allUsers.userName}}</h4>
+    </div><br><br>
+ 
+  <!-- <ul >
+    <li *ngFor = "let allUsers of allUsers"><img [src]="url" alt="hi">
+    <h4 class="name">{{allUsers.userName}}</h4></li>
+  </ul> -->
+</div>
+  </mat-card>
+<!-- 
+
+
+  <p>main works!</p>
+<button><a routerLink="/login">logIn</a></button> -->

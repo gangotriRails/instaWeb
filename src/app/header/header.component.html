@@ -1,0 +1,10 @@
+
+<mat-toolbar *ngIf="!userIsAuthenticated" class="header" color="primary">
+  <span class = "gap"><h5>Instagram</h5></span>
+  <span class = "filler"></span>
+  <div *ngIf="!userIsAuthenticated">
+    <a mat-button routerLink="/login"><h5 style="font-style: oblique;">Login</h5></a>
+ </div>
+ 
+  
+  </mat-toolbar>

@@ -1,0 +1,154 @@
+h1{
+    font-style: oblique;
+  }
+  .cards{
+    width: 250px;
+    float:left
+  }
+  .logInCard{
+     width: 70%;
+     margin: 2%;
+      height: fit-content;
+      float:left
+  }
+
+  .signUpCard{
+   
+    width: 250px;
+    height: 50px;
+    float:left;
+    clear: left;
+  }
+  mat-form-field {
+    width: 70%;
+    left: 30px;
+    top: 30px;
+  }
+  .logInImg{
+    padding-left: 50px;
+    padding-right: 200px;
+        left: 5%;
+        width: 300px;
+        height: 500px;
+        float:left
+      }
+
+  .wrapper{
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    height: 500px;
+    width: 100%; 
+  }
+  .submitButton{
+    width: 70% !important;
+    left: 30px !important;
+    top: 50px !important;
+  }
+
+  img {
+      float: left;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+  }
+  .profileImg{
+flex: 1;
+      height: 100px;
+      width: fit-content;
+    margin-left: 30%;
+  }
+  .changeImg{
+      float: left;
+      margin-top: 15%;
+  }
+  .details{
+    flex: 3;  
+  }
+  .profileCard{
+    width: 100%;
+    height: 100px;
+    margin-top: 5%;
+    background-color: rgb(255, 251, 251);
+    display: flex;
+  }
+  .example-spacer1 {
+    flex: 3 auto;
+  }
+  .header {
+    min-height: 30px !important;
+    height: 30px !important;
+  }
+  #menu {
+    position: fixed;
+    display: none;
+    width: fit-content;
+    height: fit-content;
+    background-color: none;
+    z-index: 5;
+    cursor: pointer;
+  }
+
+  ::ng-deep .menu button {
+    background-color: #4CAF50;
+    border: 1px solid green;
+    color: white;
+    padding: 0px !important;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    margin: 0px !important;
+    border-width: solid;
+  }
+
+  .password-btn-group button {
+    color: black;
+    height: fit-content;
+    cursor: pointer;
+    width: 100%; 
+    display: block;
+  }
+  
+  .password-btn-group button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+  }
+  
+  .iconText{
+    height: 30px !important;
+  }
+  .icon{
+    float: left;
+  }
+  .text{
+    margin-top: 3px;
+    font-family: cursive;
+    font-weight: bold;
+    margin-left: 5px;
+    float: left;
+  }
+  .text1{
+    margin-top: 3px;
+    font-family: cursive;
+    font-weight: bold;
+    margin-left: 5px;
+    float: left;
+  }
+  .text2{
+        margin-top: 3px;
+    font-family: cursive;
+    font-weight: bold;
+    margin-left: 5px;
+    float: left;
+  }
+  .formText{
+      margin-left: 30%;
+      float: left;
+  }
+  .formText1{
+      margin-left: 30%;
+      clear: left;
+  }
+  .editProfile{
+    margin-right: 40%;
+  }
+  

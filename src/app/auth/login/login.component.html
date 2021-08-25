@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <img class="logInImg" src="../../../assets/images/login.png">
+    <div class="cards">
+      <mat-card class="logInCard">
+        <h1>Instagram web clone</h1>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+          <mat-form-field>
+            <input matInput name="userName" ngModel type="text" placeholder="User Name" #userNameInput="ngModel" required text>
+            <mat-error *ngIf="userNameInput.invalid">Please enter a valid userNameInput.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel"
+              required>
+            <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+          </mat-form-field>
+          <button mat-raised-button class="submitButton" color="accent" type="submit">Log In</button>
+        </form>
+      </mat-card>
+      <mat-card class="signUpCard">Don`t have an account?<a routerLink="/signup">Sign Up</a></mat-card>
+    </div>
+  </div>

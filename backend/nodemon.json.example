@@ -1,0 +1,10 @@
+{
+    "env": 
+    {
+        "JWT_KEY": "SECRET_HASH_KEY_FOR_JSON_WEBTOKEN",
+        "COUCH_DB_HOST": "<couch_db_hostname_port>",
+        "COUCH_DB_ADMIN_USERNAME": "<couch_db_admin_username>",
+        "COUCH_DB_ADMIN_PASSWORD": "<couch_db_admin_password>",
+        "COUCH_DB_PROVIDER": "<couch_db_provider>"
+    }
+}

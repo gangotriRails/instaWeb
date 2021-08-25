@@ -1,0 +1,87 @@
+<mat-toolbar class="header">
+    <h5 style="font-style: oblique;margin-left: 10%;">Instagram</h5>
+    <span class="example-spacer1"></span>
+    <button mat-icon-button routerLink="/main">
+        <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="user">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #user="matMenu">
+        <div mat-menu-item *ngIf="userIsAuthenticated">
+            <h5 class="text"> {{ userName }}</h5>
+        </div>
+        <br>
+        <div class="password-btn-group">
+            <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="viewProfile()">
+                <mat-icon class="icon"><span class="material-icons-outlined">
+                        face
+                    </span></mat-icon>
+                <h5 class="text">profile</h5>
+            </button>
+            <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="onLogout()">
+                <mat-icon class="icon"><span class="material-icons-outlined">
+                        logout
+                    </span>
+                </mat-icon>
+                <h5 class="text">Log Out</h5>
+            </button>
+        </div>
+    </mat-menu>
+</mat-toolbar>
+<div class="wrapper">
+    <mat-card class="logInCard">
+        <!-- <h1>Instagram web clone</h1> -->
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <form (submit)="editForm(editUpForm)" #editUpForm="ngForm" *ngIf="!isLoading">
+            <div class="profileImg">
+                <img [src]="url" alt="hi">
+                <!-- <input type='file'  class="changeImg" (change)="onSelectFile($event)"> -->
+                <input #fileInput type="file" hidden (change)="onSelectFile($event)">
+                <button mat-button class="changeImg" (click)="fileInput.click()">Change Profile Photo</button>
+            </div>
+            <div class="formText">
+                <h3 class="text1">User Name :</h3>
+                <h3 class="text2">{{userName}}</h3>
+            </div>
+            <br>
+            <br>
+            <div class="formText1">
+                <h3 class="text1">Full Name :</h3>
+                <h3 class="text2">{{fullName}}</h3>
+            </div>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <span matPrefix>E-mail : &nbsp;</span>
+                <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel"  
+                    email>
+                <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix>Bio : &nbsp;</span>
+                <input matInput name="Bio" ngModel type="text" placeholder="bio" #BioInput="ngModel"
+                     text>
+                <mat-error *ngIf="BioInput.invalid">Please enter a valid bio.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix>Phone : &nbsp;</span>
+                <input matInput name="phoneNumber" ngModel type="text" placeholder="phone number" #phoneNumberInput="ngModel"
+                      text>
+                <mat-error *ngIf="phoneNumberInput.invalid">Please enter a valid phoneNumberInput.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix>Gender : &nbsp;</span>
+                <input matInput name="gender" ngModel type="text" placeholder="gender" #genderInput="ngModel"
+                      text>
+                <mat-error *ngIf="genderInput.invalid">Please enter a valid gender.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix>Change Password : &nbsp;</span>
+                <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel"
+                     >
+                <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+            </mat-form-field>
+            <button mat-raised-button class="submitButton" color="accent" type="submit">Submit</button>
+        </form>
+    </mat-card>
+</div>

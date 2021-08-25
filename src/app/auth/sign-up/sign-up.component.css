@@ -1,0 +1,46 @@
+h1{
+    font-style: oblique;
+  }
+  .cards{
+    width: 250px;
+    float:left
+  }
+  .logInCard{
+     width: 250px;
+      height: 350px;
+      float:left
+  }
+
+  .signUpCard{
+   
+    width: 250px;
+    height: 50px;
+    float:left;
+    clear: left;
+  }
+  mat-form-field {
+    width: 70%;
+    left: 30px;
+    top: 30px;
+  }
+  .logInImg{
+    padding-left: 50px;
+    padding-right: 200px;
+        left: 5%;
+        width: 300px;
+        height: 500px;
+        float:left
+      }
+
+  .wrapper{
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    height: 500px;
+    width: 100%; 
+  }
+  .submitButton{
+    width: 70% !important;
+    left: 30px !important;
+    top: 50px !important;
+  }

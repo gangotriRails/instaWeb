@@ -1,0 +1,28 @@
+
+.mat-button:hover {
+  font-size: 20px;
+}
+
+.filler {
+  flex: 1 1 auto;
+}
+
+.gap {
+  margin-right: 10px;
+}
+
+h4 {
+  font-weight: bold;
+}
+
+.mat-toolbar {
+  min-height: 30px !important;
+  height: 30px !important;
+  top: 0%;
+  position: sticky;
+}
+
+.mat-toolbar-row {
+  min-height: 30px !important;
+  height: 30px !important;
+}
