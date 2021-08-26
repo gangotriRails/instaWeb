@@ -7,13 +7,18 @@ if (process.env.COUCH_DB_PROVIDER == "IBM_CLOUDANT") {
 }
 console.log("couchDbAdminUrl used: ",couchDbAdminUrl);
 var cloudant = new Cloudant({ url: couchDbAdminUrl });
-// return new Promise((resolve, reject) => {
-//   var db = "_users";
-//   console.log("inside authenticateUser");
-//   var database = cloudant.db.use(db);
-//   database.list({include_docs:true}, function (err, data) {
-//     console.log(err, data);
-//   });
+
+module.exports.getAllDocs = async function (db){
+return new Promise((resolve, reject) => {
+  var db = "_users";
+  console.log("inside authenticateUser");
+  var database = cloudant.db.use(db);
+  database.list({include_docs:true}, function (err, data) {
+    // console.log(err, data);
+    resolve(data)
+  });
+});
+}
 // Authenticate User
 module.exports.authenticateUser = async function (username, password) {
   return new Promise((resolve, reject) => {

@@ -93,6 +93,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -110,5 +111,6 @@
   "defaultProject": "Insta-Web",
   "cli": {
     "analytics": false
+    
   }
 }

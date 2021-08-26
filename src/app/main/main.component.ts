@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { PostsService } from '../services/posts.service';
 import { users } from '../models/posts.model'
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog/dialog';
 import { PostDialogComponent } from './post-dialog/post-dialog.component';
+// import { MatDialog } from '@angular/material/dialog/public-api';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-main',
@@ -24,6 +27,7 @@ export class MainComponent implements OnInit {
   url:any
   allUsers :any;
   allUserName :any;
+
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
     console.log("this.userIsAuthenticated", this.userIsAuthenticated)
@@ -68,7 +72,7 @@ export class MainComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.postsService.postImage();
-
+      // this.isLoading = false;
     });
   }
 

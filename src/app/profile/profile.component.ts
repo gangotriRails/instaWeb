@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+// import { MatDialog } from '@angular/material/dialog/public-api';
+// import { MatDialog } from '@angular/material/dialog/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { EditComponent } from '../edit/edit.component';
 import { PostsService } from '../services/posts.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +15,7 @@ import { PostsService } from '../services/posts.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(public authService: AuthService,private postsService:PostsService, private router: Router) { }
+  constructor(public dialog: MatDialog,public authService: AuthService,private postsService:PostsService, private router: Router) { }
   userIsAuthenticated = false;
   userName:string;
   userEmail:string;
@@ -60,7 +65,16 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile(){
-    this.router.navigate(["/edit"]);
+    // this.router.navigate(["/edit"]);
+    const dialogRef = this.dialog.open(EditComponent, {
+      width: '250px',
+      // data: {name: this.name, animal: this.animal}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.postsService.postImage();
+      this.isLoading = false;
+    });
   }
 
  

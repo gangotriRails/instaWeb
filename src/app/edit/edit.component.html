@@ -32,13 +32,13 @@
 <div class="wrapper">
     <mat-card class="logInCard">
         <!-- <h1>Instagram web clone</h1> -->
-        <mat-spinner *ngIf="isLoading"></mat-spinner>
-        <form (submit)="editForm(editUpForm)" #editUpForm="ngForm" *ngIf="!isLoading">
+        <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+        <form (submit)="editForm(editUpForm)" #editUpForm="ngForm" >
             <div class="profileImg">
                 <img [src]="url" alt="hi">
-                <!-- <input type='file'  class="changeImg" (change)="onSelectFile($event)"> -->
-                <input #fileInput type="file" hidden (change)="onSelectFile($event)">
-                <button mat-button class="changeImg" (click)="fileInput.click()">Change Profile Photo</button>
+                <input type='file'  class="changeImg" (change)="onSelectFile($event)">
+                    <!-- <input #fileInput type="file" hidden (change)="onSelectFile($event)">
+                    <button mat-button class="changeImg" (click)="fileInput.click()">Change Profile Photo</button> -->
             </div>
             <div class="formText">
                 <h3 class="text1">User Name :</h3>
@@ -81,7 +81,7 @@
                      >
                 <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
             </mat-form-field>
-            <button mat-raised-button class="submitButton" color="accent" type="submit">Submit</button>
+            <button mat-raised-button class="submitButton" color="accent" type="submit" [mat-dialog-close]="true">Submit</button>
         </form>
     </mat-card>
 </div>

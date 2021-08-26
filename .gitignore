@@ -43,3 +43,11 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+/backend/node_modules
+backend/data/*
+backend/Insta-Web
+/backend/data/*
+!/backend/data/.gitkeep
+**nodemon.json
+**.env

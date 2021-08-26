@@ -25,7 +25,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditComponent } from './edit/edit.component';
 import { PostDialogComponent } from './main/post-dialog/post-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
@@ -56,7 +56,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
-    MatDialogModule
+    MatDialogModule,
+    // MatDialog
+
   ],
   providers: [PouchService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

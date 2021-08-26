@@ -17,8 +17,8 @@ export class EditComponent implements OnInit {
   userEmail: string;
   fullName: string;
   authListenerSubs: any;
-  isLoading: boolean;
-  isLoadingfromServer: any;
+  // isLoading: boolean;
+  // isLoadingfromServer: any;
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -37,7 +37,7 @@ export class EditComponent implements OnInit {
         this.fullName = this.authService.getUserFullName();
       });
 
-    this.isLoadingfromServer = true;
+    // this.isLoadingfromServer = true;
     var profile = this.authService.getProfile();
     console.log("++++++++++++++++++", profile)
     if (profile == "null") {
@@ -72,8 +72,9 @@ export class EditComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    console.log("url",this.url)
     console.log("signing Up")
-    this.isLoading = true;
+    // this.isLoading = true;
     console.log("bio :", form.value.Bio)
    this.postsService.editProfile(this.userName ,this.url,form.value.email, form.value.Bio, form.value.phoneNumber, form.value.gender,form.value.password);
 
