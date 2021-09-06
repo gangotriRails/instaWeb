@@ -38,16 +38,16 @@ export class PouchService implements OnInit {
   }
 
   async createRemoteDbInstance(_dbUrl :any , _couchDbName : any, _couchDbKey :any, _couchDbPwd :any) {
-    console.log("_couchDbKey",_couchDbKey,"_couchDbPwd",_couchDbPwd,"couchBaseUrl",_dbUrl,"_couchDbName",_couchDbName);
+    // console.log("_couchDbKey",_couchDbKey,"_couchDbPwd",_couchDbPwd,"couchBaseUrl",_dbUrl,"_couchDbName",_couchDbName);
     let res = encodeURIComponent(_couchDbKey);
-    console.log("production",production);
+    // console.log("production",production);
     if(production == false) {
       this.couchDbUrl = `${_dbUrl}/${_couchDbName}`;
-      console.log("In development mode, this.couchDbUrl = " + this.couchDbUrl);
+      // console.log("In development mode, this.couchDbUrl = " + this.couchDbUrl);
       this.remoteDbInstance = new PouchDB(this.couchDbUrl, { revs_limit: 1, auto_compaction: true, skip_setup: true });
     } else {
       this.couchDbUrl = `${this.BACKEND_URL}/couchdb/${_couchDbName}`;
-      console.log("In production mode, this.couchDbUrl = " + this.couchDbUrl);
+      // console.log("In production mode, this.couchDbUrl = " + this.couchDbUrl);
       this.remoteDbInstance = new PouchDB(this.couchDbUrl, { revs_limit: 1, auto_compaction: true, skip_setup: true, adapter: 'http', "auth": {"username": _couchDbKey, "password": _couchDbPwd}});
     }
     return this.remoteDbInstance;
@@ -56,10 +56,10 @@ export class PouchService implements OnInit {
   async checkDbStatus(dbInstance :any) {
     let status = await dbInstance.info(function (err :any, info :any) {
       if (err) {
-        console.log(err);
+        // console.log(err);
         return false
       } else {
-        // console.log("userDbInstance in authService", info);
+        // // console.log("userDbInstance in authService", info);
         return true;
       }
     });

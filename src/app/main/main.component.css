@@ -53,26 +53,29 @@
     margin-left: 5px;
     float: left;
   }
-  .add{
-      margin-left: 10% !important;
-      width: 50% !important;
-      float: left;
+  
+  ::ngdeep mat-card-image{
+    height: 50px !important;
+    border:2px black solid;
   }
-  .userList{
-    margin-left: 10%;
+  
+  .profileImg {
     float: left;
-    width: 20%;
-    height: fit-content;
-  }
-  img {
-    float: left;
-  height: 30px;
-  width: 30px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
+}
+.allprofileImg {
+  float: left;
+height: 30px;
+width: 30px;
+border-radius: 50%;
 }
 .name{
   float: left;
   margin-left: 10%;
+  font-weight: bolder;
+  font-family: cursive;
 }
 .Switch{
  margin-left: 5%;
@@ -81,12 +84,74 @@
 .myUser{
   float: left;
 }
-/* .otherUser{
+.otherUser{
   float: left;
   clear: left;
-} */
+}
+.add{
+  margin-left: 5% !important;
+  float: left;
+}
+
+.post{
+  float: left;
+  width: 50%;
+}
+.userList{
+  float: left;
+  top:10%;
+  left: 70%;
+  position: fixed;
+  width: 300px;
+}
+.example-card {
+  width: 600px;
+  margin-left: 5%;
+  margin-top: 40px;
+  height: fit-content;
+  float: left;
+  clear: left;
+  border:2px black solid;
+}
+
+.example-header-image {
+  /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); */
+  background-size: cover;
+}
   
+
 .suggestion{
   color: gray;
   text-decoration: underline;
+}
+.like{
+  display: flex;
+}
+.likeButton{  
+  float: left;
+  color: red;
+}
+.likeButton1{
+  float: left;
+}
+.likeCount{
+  margin-top: 10px;
+  float: left;
+}
+.comment{
+  /* border: 2px black solid; */
+  width: 500px;
+  float: left;
+}
+commentButton{
+  float: left;
+}
+
+.commentCount{
+  margin-left: 20px;
+  margin-top: 12px;
+}
+
+.CommentsAll{
+  color: blue;
 }

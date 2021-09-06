@@ -31,35 +31,56 @@
   </mat-toolbar>
   <br>
   <br>
-  <mat-toolbar class="add" >
-    <button mat-icon-button (click)="addPost()">
-        <mat-icon><span class="material-icons-outlined">
-            add_circle
-            </span></mat-icon>
-      </button>
-  </mat-toolbar>
-  <mat-card class="userList">
-    <div class="myUser">
-    <img [src]="url" alt="hi">
-    <h4 class="name">{{userName}}</h4>
+  <div class="posts">
+    <button mat-fab class="add" (click)="addPost()">
+      <mat-icon class="icon">add_circles</mat-icon>
+    </button>
+  <mat-card class="example-card" *ngFor="let allPosts of allPosts">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"  [ngStyle]="{ 'background-image': allPosts.profileUrl}"></div>
+      <mat-card-title>{{allPosts.userName}}</mat-card-title>
+      <mat-card-subtitle>{{allPosts.timeStamp}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="allPosts.postUrl" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>
+       {{allPosts.caption}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="like">
+      <button mat-icon-button [id]="allPosts._id" (click)="like(allPosts._id)">
+        <span class="material-icons">
+          favorite
+          </span></button>
+      <h4 class="likeCount">{{allPosts.like.length}}</h4>
+      <button mat-button (click)="openComment(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
+        </div>
+     <mat-form-field class="comment" appearance="fill">
+      <mat-label>add a comment</mat-label>
+      <input matInput type="text" [(ngModel)]="value">
+      <span class="example-spacer1"></span>
+    </mat-form-field>
+    <button mat-button class="commentButton" (click) = "commentUp(value,allPosts._id)">
+      post</button>
+    </mat-card-actions>
+  </mat-card>
+<br><br>
+</div> 
+<mat-card class="userList">
+  <div class="myUser">
+    <img class="profileImg" [src]="url" alt="hi">
+    <h3 class="name">{{userName}}</h3>
+  
     <a class="Switch" routerLink="/login"><h4>Switch Account</h4></a>
-  </div>
+  </div><br><br>
   <div class="otherUser">
     <h4 class="suggestion">Suggestions For You</h4>
     <br>
     <div *ngFor = "let allUsers of allUsers">
-      <!-- <img [src]="url" alt="hi"> -->
-      <h4>{{allUsers.userName}}</h4>
+      <img class="allprofileImg" [src]="allUsers.userProfile" alt="hi">
+      <h3 class="name">{{allUsers.userName}}</h3><br>
+      <h5>{{allUsers.userFullName}}</h5>
     </div><br><br>
- 
-  <!-- <ul >
-    <li *ngFor = "let allUsers of allUsers"><img [src]="url" alt="hi">
-    <h4 class="name">{{allUsers.userName}}</h4></li>
-  </ul> -->
 </div>
-  </mat-card>
-<!-- 
-
-
-  <p>main works!</p>
-<button><a routerLink="/login">logIn</a></button> -->
+</mat-card>

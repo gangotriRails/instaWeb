@@ -31,14 +31,11 @@
 </mat-toolbar>
 <div class="wrapper">
     <mat-card class="logInCard">
-        <!-- <h1>Instagram web clone</h1> -->
-        <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
-        <form (submit)="editForm(editUpForm)" #editUpForm="ngForm" >
+        <form (submit)="editForm(editUpForm)" #editUpForm="ngForm">
             <div class="profileImg">
                 <img [src]="url" alt="hi">
-                <input type='file'  class="changeImg" (change)="onSelectFile($event)">
-                    <!-- <input #fileInput type="file" hidden (change)="onSelectFile($event)">
-                    <button mat-button class="changeImg" (click)="fileInput.click()">Change Profile Photo</button> -->
+                <input #fileInput type="file" hidden (change)="onSelectFile($event)">
+                <button mat-button class="changeImg" (click)="fileInput.click()">Change Your Profile</button>
             </div>
             <div class="formText">
                 <h3 class="text1">User Name :</h3>
@@ -53,35 +50,32 @@
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <span matPrefix>E-mail : &nbsp;</span>
-                <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel"  
-                    email>
+                <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" email>
                 <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <span matPrefix>Bio : &nbsp;</span>
-                <input matInput name="Bio" ngModel type="text" placeholder="bio" #BioInput="ngModel"
-                     text>
+                <input matInput name="bio" ngModel type="text" placeholder="bio" #BioInput="ngModel" text>
                 <mat-error *ngIf="BioInput.invalid">Please enter a valid bio.</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <span matPrefix>Phone : &nbsp;</span>
-                <input matInput name="phoneNumber" ngModel type="text" placeholder="phone number" #phoneNumberInput="ngModel"
-                      text>
+                <input matInput name="phoneNumber" ngModel type="text" placeholder="phone number"
+                    #phoneNumberInput="ngModel" text>
                 <mat-error *ngIf="phoneNumberInput.invalid">Please enter a valid phoneNumberInput.</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <span matPrefix>Gender : &nbsp;</span>
-                <input matInput name="gender" ngModel type="text" placeholder="gender" #genderInput="ngModel"
-                      text>
+                <input matInput name="gender" ngModel type="text" placeholder="gender" #genderInput="ngModel" text>
                 <mat-error *ngIf="genderInput.invalid">Please enter a valid gender.</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <span matPrefix>Change Password : &nbsp;</span>
-                <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel"
-                     >
+                <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel">
                 <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
             </mat-form-field>
-            <button mat-raised-button class="submitButton" color="accent" type="submit" [mat-dialog-close]="true">Submit</button>
+            <button mat-raised-button class="submitButton" color="accent" type="submit"
+                [mat-dialog-close]="true">Submit</button>
         </form>
     </mat-card>
 </div>

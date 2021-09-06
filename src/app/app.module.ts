@@ -27,6 +27,7 @@ import { EditComponent } from './edit/edit.component';
 import { PostDialogComponent } from './main/post-dialog/post-dialog.component';
 // import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CommentsComponent } from './main/comments/comments.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     HeaderComponent,
     ProfileComponent,
     EditComponent,
-    PostDialogComponent
+    PostDialogComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

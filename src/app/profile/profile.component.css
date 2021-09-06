@@ -1,4 +1,4 @@
-img {
+.profile {
     height: 100px;
     width: 100px;
     border-radius: 50%;
@@ -76,4 +76,60 @@ img {
   .editProfile{
     margin-right: 40%;
   }
-  
+  .like{
+    display: flex;
+  }
+  .likeButton{  
+    float: left;
+  }
+  .likeCount{
+    margin-top: 10px;
+    float: left;
+  }
+  .comment{
+    border: 2px black solid;
+    width: 500px;
+  }
+  .Switch{
+    margin-left: 5%;
+     float: left;
+   }
+   .myUser{
+     float: left;
+   }
+   .otherUser{
+     float: left;
+     clear: left;
+   }
+   .add{
+     margin-left: 5% !important;
+     float: left;
+     width: 600px;
+   }
+   
+   .post{
+     float: left;
+     width: 50%;
+   }
+   .userList{
+     float: left;
+     top:10%;
+     left: 70%;
+     position: fixed;
+     width: 300px;
+   }
+   .example-card {
+     width: 600px;
+     margin-left: 5%;
+     margin-top: 40px;
+     height: fit-content;
+     float: left;
+     clear: left;
+     border:2px black solid;
+   }
+   
+   .example-header-image {
+     /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); */
+     background-size: cover;
+   }
+     

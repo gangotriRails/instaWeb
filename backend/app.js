@@ -5,10 +5,11 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const userListRoutes = require("./routes/usersList")
 const editRoutes = require("./routes/edit")
+const postRoutes = require("./routes/posts")
 
 
 const app = express();
-//console.log("app initiated")
+//// console.log("app initiated")
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,7 +32,10 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.use("/api/posts", userRoutes);
+app.use(express.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true,parameterLimit:50000}));
+app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/usersList", userListRoutes);
 app.use("/api/edit", editRoutes);

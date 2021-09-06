@@ -23,8 +23,10 @@ export class AuthService {
   public email :any  ;
   public BACKEND_URL;
   private AUTH_BACKEND_URL;
-
-  // Pouch & Couch related details
+  public bio:any
+  public phone:any
+  public gender:any
+    // Pouch & Couch related details
   private dbUrl: any  ;
   public userDb: any  ;
   private userDbKey: any  ;
@@ -35,13 +37,13 @@ export class AuthService {
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router, @Inject(DOCUMENT) private document: Document, private pouchService: PouchService) {
-    //console.log("APP_BASE_HREF "+this.document.location.origin);
+    //// console.log("APP_BASE_HREF "+this.document.location.origin);
     this.BACKEND_URL = this.document.location.origin;
     this.AUTH_BACKEND_URL = this.BACKEND_URL + "/api/user";
   }
 
   getToken() {
-    console.log("getToken inside authSevice"+this.token);
+    // console.log("getToken inside authSevice"+this.token);
     return this.token;
   }
 
@@ -72,19 +74,29 @@ export class AuthService {
   getUserFullName(){
     return this.fullName;
   }
+  
   getProfile(){
     return this.profile;
   }
+  getBio(){
+    return this.bio;
+  }
+  getPhone(){
+    return this.phone
+  }
+  getGender(){
+     return this.gender
+   }
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
 
   createUser(email: string,fullName:string,userName:string, password: string) {
-    console.log("creating post requesting for signUp")
+    // console.log("creating post requesting for signUp")
     const authData: AuthData = { email: email,fullName:fullName,userName:userName,profile:"assets/images/default.png", password: password};
     this.http.post(this.AUTH_BACKEND_URL + "/signup", authData).subscribe(
       async (response) => {
-        console.log("Response",response)
+        // console.log("Response",response)
         this.router.navigate(["/login"]);
       },
       error => {
@@ -96,15 +108,29 @@ export class AuthService {
   login(email: string,password: string) {
     const logInData: LogInData = { email: email, password: password };
     this.http
-      .post<{ token: string; expiresIn: number; userId: string, email: string,fullName:string,userName:string, profile:any,isLoaded: string, dbUrl: string, userDb: string, userDbKey: string, userDbPwd: string }>(
+      .post<{ token: string;
+         expiresIn: number;
+         userId: string,
+         email: string,
+         fullName:string,
+         userName:string,
+         profile:any,
+         isLoaded: string,
+         dbUrl: string,
+         userDb: string,
+         bio:any,
+         phone:any,
+         gender:any,
+         userDbKey: string,
+         userDbPwd: string }>(
         this.AUTH_BACKEND_URL + "/login",
         logInData
       ).subscribe(
         async (response) => {
-          console.log("login response : ",response)
+          // console.log("login response : ",response)
           const token = response.token;
           this.token = token;
-          console.log("+++++++++++++++",response.profile);
+          // console.log("+++++++++++++++",response.profile);
           if (token) {
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
@@ -114,6 +140,9 @@ export class AuthService {
             this.userName = response.userName;
             this.fullName = response.fullName;
             this.profile = response.profile;
+            this.bio = response.bio;
+            this.phone = response.phone;
+            this.gender = response.gender;
             this.isLoaded = response.isLoaded;
             this.dbUrl = response.dbUrl
             this.userDb = response.userDb;
@@ -124,14 +153,27 @@ export class AuthService {
             const expirationDate = new Date(
               now.getTime() + expiresInDuration * 1000
             );
-            this.saveAuthData(token, expirationDate, this.userId, this.userEmail,this.userName,this.fullName ,this.profile,this.dbUrl, this.userDb, this.userDbKey, this.userDbPwd);
+            this.saveAuthData(token, 
+              expirationDate, 
+              this.userId, 
+              this.userEmail,
+              this.userName,
+              this.fullName ,
+              this.profile,
+              this.bio,
+              this.phone,
+              this.gender,
+              this.dbUrl, 
+              this.userDb, 
+              this.userDbKey, 
+              this.userDbPwd);
           
              this.router.navigate(["/main"]);
           }
         },
         error => {
           this.authStatusListener.next(false);
-          console.log("error while login ",error);
+          // console.log("error while login ",error);
         }
       );
   }
@@ -152,6 +194,9 @@ export class AuthService {
       this.userName = authInformation.userName;
       this.fullName = authInformation.fullName;
       this.profile = authInformation.profile;
+      this.bio = authInformation.bio;
+      this.phone = authInformation.phone;
+      this.gender = authInformation.gender;
       this.dbUrl = authInformation.dbUrl;
       this.userDb = authInformation.userDb;
       this.userDbKey = authInformation.userDbKey;
@@ -172,6 +217,9 @@ export class AuthService {
     this.fullName = null;
     this.profile = null;
     this.userEmail = null;
+    this.bio = null;
+    this.phone = null;
+    this.gender = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(["/login"]);
@@ -184,7 +232,20 @@ export class AuthService {
   }
 
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string, userEmail: string,userName:string,fullName:string,profile:any, dbUrl: string, userDb: string, userDbKey: string, userDbPwd: string) {
+  private saveAuthData(token: string, 
+    expirationDate: Date, 
+    userId: string, 
+    userEmail: string,
+    userName:string,
+    fullName:string,
+    profile:any, 
+    bio:any,
+    phone:any,
+    gender:any,
+    dbUrl: string, 
+    userDb: string, 
+    userDbKey: string, 
+    userDbPwd: string) {
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("userId", userId);
@@ -192,6 +253,9 @@ export class AuthService {
     localStorage.setItem("userName", userName);
     localStorage.setItem("fullName", fullName);
     localStorage.setItem("profile", profile);
+    localStorage.setItem("bio", bio);
+    localStorage.setItem("phone", phone);
+    localStorage.setItem("gender", gender);
     localStorage.setItem("dbUrl", dbUrl);
     localStorage.setItem("userDb", userDb);
     localStorage.setItem("userDbKey", userDbKey);
@@ -206,6 +270,9 @@ export class AuthService {
     localStorage.removeItem("userName");
     localStorage.removeItem("fullName");
     localStorage.removeItem("profile");
+    localStorage.removeItem("bio");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("gender");
     localStorage.removeItem("dbUrl");
     localStorage.removeItem("userDb");
     localStorage.removeItem("userDbKey");
@@ -220,6 +287,9 @@ export class AuthService {
     const userName = localStorage.getItem("userName");
     const fullName = localStorage.getItem("fullName");
     const profile = localStorage.getItem("profile");
+    const bio = localStorage.getItem("bio");
+    const phone = localStorage.getItem("phone");
+    const gender = localStorage.getItem("gender");
     const dbUrl = localStorage.getItem("dbUrl");
     const userDb = localStorage.getItem("userDb");
     const userDbKey = localStorage.getItem("userDbKey");
@@ -235,6 +305,9 @@ export class AuthService {
       userName:userName,
       fullName:fullName,
       profile:profile,
+      bio:bio,
+      phone:phone,
+      gender:gender,
       dbUrl: dbUrl,
       userDb: userDb,
       userDbKey: userDbKey,

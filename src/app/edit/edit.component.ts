@@ -17,18 +17,12 @@ export class EditComponent implements OnInit {
   userEmail: string;
   fullName: string;
   authListenerSubs: any;
-  // isLoading: boolean;
-  // isLoadingfromServer: any;
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    console.log("this.userIsAuthenticated", this.userIsAuthenticated)
     this.userName = this.authService.getUserName();
-    console.log("this.userName", this.userName);
     this.userEmail = this.authService.getUserEmail();
-    console.log("UserEmail", this.userEmail);
     this.fullName = this.authService.getUserFullName();
-    console.log("fullName", this.fullName)
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
@@ -37,45 +31,39 @@ export class EditComponent implements OnInit {
         this.fullName = this.authService.getUserFullName();
       });
 
-    // this.isLoadingfromServer = true;
     var profile = this.authService.getProfile();
-    console.log("++++++++++++++++++", profile)
-    if (profile == "null") {
-      this.url = 'assets/images/default.png';
-    }
-    console.log("url : ", this.url)
+      this.url = profile
   }
   url: any
   viewProfile() {
-    console.log("view profile")
     this.router.navigate(["/profile"]);
   }
   onSelectFile(event:any) {
-    console.log("selection Image")
     if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
+      var reader :any;
+      reader= new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.readAsDataURL(event.target.files[0]); 
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        this.url = event.target?.result;
+      reader.onload = (event:any) => { 
+        this.url = event.target.result;
       }
-      console.log("url : ",this.url)
     }
   }
   onLogout() {
     this.authService.logout();
   }
   editForm(form: NgForm) {
-    console.log("edit Page")
-    console.log("+++++++++++++++++++++", this.url);
     if (form.invalid) {
       return;
     }
-    console.log("url",this.url)
-    console.log("signing Up")
-    // this.isLoading = true;
-    console.log("bio :", form.value.Bio)
+    console.log("email :",form.value.email)
+    console.log("bio :",form.value.bio)
+    console.log("phone :",form.value.phoneNumber)
+    console.log("gender :",form.value.gender)
+    console.log("password :",form.value.password)
+    console.log("url :",this.url)
+
    this.postsService.editProfile(this.userName ,this.url,form.value.email, form.value.Bio, form.value.phoneNumber, form.value.gender,form.value.password);
 
   }

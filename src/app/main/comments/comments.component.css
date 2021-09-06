@@ -1,0 +1,53 @@
+.comment{
+    /* border: 2px black solid; */
+    width: 300px;
+    float: left;
+    /* padding-top: 30px; */
+    margin-top: 30px;
+  }
+  .commentButton{
+    float: left;
+    margin-top: 30px;
+  }
+  .userName{
+    float: left;
+    font-weight: bold;
+  }
+.commentsCard{
+  height: 300px;
+ overflow: auto;
+}
+
+.container{
+  display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+.like{
+  display: flex;
+}
+.likeButton{  
+  float: left;
+  color: red;
+}
+.likeCount{
+  margin-top: 10px;
+  float: left;
+}
+.comment{
+  /* border: 2px black solid; */
+  width: 500px;
+  float: left;
+}
+commentButton{
+  float: left;
+}
+
+.commentCount{
+  margin-left: 20px;
+  margin-top: 12px;
+}
+
+.CommentsAll{
+  color: blue;
+}
