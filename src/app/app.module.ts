@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import { PouchService } from './services/pouch.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule} from '@angular/material/card'
 import { FormsModule ,ReactiveFormsModule} from '@angular/forms';
@@ -19,13 +18,11 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
 import {MatIconModule } from '@angular/material/icon'
 import {MatMenuModule} from '@angular/material/menu';
-// import { MatToolbar } from '@angular/material/toolbar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditComponent } from './edit/edit.component';
 import { PostDialogComponent } from './main/post-dialog/post-dialog.component';
-// import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentsComponent } from './main/comments/comments.component';
 
@@ -59,12 +56,10 @@ import { CommentsComponent } from './main/comments/comments.component';
     MatIconModule,
     MatToolbarModule,
     MatDialogModule,
-    // MatDialog
 
   ],
-  providers: [PouchService,
+  providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

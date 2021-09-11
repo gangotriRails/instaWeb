@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { PouchService } from './pouch.service';
-import { users, EditData, postData, posts, myPosts } from '../models/posts.model';
-import { post } from 'jquery';
+import { users, posts, myPosts } from '../models/posts.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +23,7 @@ export class PostsService {
   commentChanged = new EventEmitter<any>();
   likeChanged = new EventEmitter<any>();
 
-  constructor(@Inject(DOCUMENT) private document: Document, private router: Router, private http: HttpClient, private route: ActivatedRoute, private authService: AuthService, private pouchService: PouchService) {
+  constructor(@Inject(DOCUMENT) private document: Document, private router: Router, private http: HttpClient, private route: ActivatedRoute, private authService: AuthService) {
     this.POST_BACKEND_URL = this.authService.BACKEND_URL + "/api/post";
     // // console.log("posts backend url : ", this.POST_BACKEND_URL);
 

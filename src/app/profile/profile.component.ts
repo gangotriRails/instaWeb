@@ -67,12 +67,8 @@ export class ProfileComponent implements OnInit {
   }
 
   url: any
-  viewProfile() {
-    this.router.navigate(["/profile"]);
-  }
-  onLogout() {
-    this.authService.logout();
-  }
+  
+  
   addPost() {
   }
 

@@ -1,10 +1,3 @@
-// export class users {
-//     constructor(
-//       public userName:any,
-//     ) {}
-//     public static userArray = [];
-//   }
-  
   export class users {
     constructor(
       public userName:any,
@@ -41,20 +34,3 @@
     ) {}
     public static myPostArray :any [] = [];
   }
-  export interface postData {
-    userName:any;
-    profileUrl:any;
-    postUrl:any;
-    caption:any;
-    timeStamp:any
-  }
-  export interface EditData {
-    userName:string;
-    url:any;
-    email: string;
-    bio:string;
-    phoneNumber:string;
-    gender:string
-    password: string;
-  }
-  

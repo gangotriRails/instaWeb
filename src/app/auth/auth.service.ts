@@ -5,9 +5,6 @@ import { Subject } from "rxjs";
 import { Inject } from '@angular/core';
 import { AuthData ,LogInData} from "./auth-data.model";
 import { DOCUMENT } from '@angular/common';
-import { PouchService } from '../services/pouch.service';
-
-// const BACKEND_URL = environment.apiUrl + "/user/";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -36,7 +33,7 @@ export class AuthService {
 
   private authStatusListener = new Subject<boolean>();
 
-  constructor(private http: HttpClient, private router: Router, @Inject(DOCUMENT) private document: Document, private pouchService: PouchService) {
+  constructor(private http: HttpClient, private router: Router, @Inject(DOCUMENT) private document: Document) {
     //// console.log("APP_BASE_HREF "+this.document.location.origin);
     this.BACKEND_URL = this.document.location.origin;
     this.AUTH_BACKEND_URL = this.BACKEND_URL + "/api/user";

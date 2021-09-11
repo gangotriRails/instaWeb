@@ -35,9 +35,7 @@ export class EditComponent implements OnInit {
       this.url = profile
   }
   url: any
-  viewProfile() {
-    this.router.navigate(["/profile"]);
-  }
+  
   onSelectFile(event:any) {
     if (event.target.files && event.target.files[0]) {
       var reader :any;
@@ -50,9 +48,7 @@ export class EditComponent implements OnInit {
       }
     }
   }
-  onLogout() {
-    this.authService.logout();
-  }
+  
   editForm(form: NgForm) {
     if (form.invalid) {
       return;

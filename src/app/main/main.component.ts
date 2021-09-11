@@ -190,9 +190,6 @@ export class MainComponent implements OnInit {
     });
   }
 
-  viewProfile() {
-    this.router.navigate(["/profile"]);
-  }
 
   addPost() {
     const dialogRef = this.dialog.open(PostDialogComponent, {
@@ -200,10 +197,6 @@ export class MainComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
-  }
-
-  onLogout() {
-    this.authService.logout();
   }
 
 }

@@ -1,10 +1,31 @@
-
-<mat-toolbar *ngIf="!userIsAuthenticated" class="header" color="primary">
-  <span class = "gap"><h5>Instagram</h5></span>
-  <span class = "filler"></span>
-  <div *ngIf="!userIsAuthenticated">
-    <a mat-button routerLink="/login"><h5 style="font-style: oblique;">Login</h5></a>
- </div>
- 
-  
-  </mat-toolbar>
+<mat-toolbar class="header">
+  <h5 style="font-style: oblique;margin-left: 10%;">Instagram</h5>
+  <span class="example-spacer1"></span>
+  <button mat-icon-button routerLink="/main" >
+      <mat-icon>home</mat-icon>
+    </button>
+  <button mat-icon-button [matMenuTriggerFor]="user">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #user="matMenu">
+    <div mat-menu-item *ngIf="userIsAuthenticated">
+      <h5 class="text"> {{ userName }}</h5>
+    </div>
+    <br>
+    <div class="password-btn-group">
+      <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="viewProfile()">
+        <mat-icon class="icon"><span class="material-icons-outlined">
+          face
+          </span></mat-icon>
+        <h5 class="text">profile</h5>
+      </button>
+        <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="onLogout()">
+          <mat-icon class="icon"><span class="material-icons-outlined">
+            logout
+            </span>
+            </mat-icon>
+          <h5 class="text">Log Out</h5>
+        </button>
+    </div>
+  </mat-menu>
+</mat-toolbar>

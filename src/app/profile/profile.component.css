@@ -19,60 +19,6 @@
     background-color: rgb(255, 251, 251);
     display: flex;
   }
-  .example-spacer1 {
-    flex: 3 auto;
-  }
-  .header {
-    min-height: 30px !important;
-    height: 30px !important;
-  }
-  #menu {
-    position: fixed;
-    display: none;
-    width: fit-content;
-    height: fit-content;
-    background-color: none;
-    z-index: 5;
-    cursor: pointer;
-  }
-
-  ::ng-deep .menu button {
-    background-color: #4CAF50;
-    border: 1px solid green;
-    color: white;
-    padding: 0px !important;
-    cursor: pointer;
-    display: inline-block;
-    outline: none;
-    margin: 0px !important;
-    border-width: solid;
-  }
-
-  .password-btn-group button {
-    color: black;
-    height: fit-content;
-    cursor: pointer;
-    width: 100%; 
-    display: block;
-  }
-  
-  .password-btn-group button:not(:last-child) {
-    border-bottom: none; /* Prevent double borders */
-  }
-  
-  .iconText{
-    height: 30px !important;
-  }
-  .icon{
-    float: left;
-  }
-  .text{
-    margin-top: 3px;
-    font-family: cursive;
-    font-weight: bold;
-    margin-left: 5px;
-    float: left;
-  }
   .editProfile{
     margin-right: 40%;
   }

@@ -46,5 +46,8 @@ app.use("/api/edit", editRoutes);
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "Insta-Web", "index.html"));
 });
+app.get('*', (req, res) =>{
+  res.sendFile(path.join(__dirname , "Insta-Web", "index.html"));
+});
 
 module.exports = app;
