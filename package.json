@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
