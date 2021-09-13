@@ -66,7 +66,7 @@ exports.userLogin = async (req, res, next) => {
 
 // User Creation
 exports.createUser = async (req, res, next) => {
-
+  console.log("entered createUser in user.js");
   await couch.findUser("_users",req.body.email).then(async (response) => {
     // console.log("Got Output from Cloudant find function on createUser");
     if (response.statusCode == 404) {

@@ -49,5 +49,5 @@ app.use((req, res, next) => {
 app.get('*', (req, res) =>{
   res.sendFile(path.join(__dirname , "Insta-Web", "index.html"));
 });
-
+console.log("Starting app !!!");
 module.exports = app;
