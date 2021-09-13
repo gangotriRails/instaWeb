@@ -55,10 +55,10 @@ export class MainComponent implements OnInit {
   likesValue:any;
   currentComments: any;
   likesArray:any;
-  isLiked:boolean
+  isLiked:boolean;
+  loadPost:number ;
+  loadButton:boolean = false;
   ngOnInit(): void {
-    $(".likeButton").hide();
-    $(".likeButton1").show();
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userName = this.authService.getUserName();
     this.userEmail = this.authService.getUserEmail();
@@ -72,7 +72,8 @@ export class MainComponent implements OnInit {
     this.isLoadingfromServer = true;
     this.postsService.getUsers();
     this.url = this.authService.getProfile();
-    this.postsService.getPost();
+    this.loadPost = 10
+    this.postsService.getPost(this.loadPost);
 
     setTimeout(() => {
       this.allUsers = users.userArray
@@ -85,20 +86,9 @@ export class MainComponent implements OnInit {
 
     setTimeout(() => {
       this.allPosts = posts.postArray;
-      for (let i = 0; i < this.allPosts.length; i++) {
-        if(this.allPosts[i].like.includes(this.userName)) {
-        $("#"+this.allPosts[i]._id).addClass("likeButton")
-        $("#"+this.allPosts[i]._id).removeClass("likeButton1")
-        }else{
-        $("#"+this.allPosts[i]._id).addClass("likeButton1")
-        $("#"+this.allPosts[i]._id).removeClass("likeButton")
-        }
-        this.allPostsUser = this.allPosts[i].userName;
-        this.commentsLength = this.allPosts[i].comments.length
-        this.allPostsProfileUrl = this.allPosts[i].profileUrl;
-        this.allPostsUrl = this.allPosts[i].postUrl
-        this.allPostsTimeStamp = this.allPosts[i].timeStamp
-        this.allPostsCaption = this.allPosts[i].caption
+      console.log("post length initially :: ",this.allPosts.length);
+      if(this.loadPost <= this.allPosts.length){
+        this.loadButton = true;
       }
     }, 2000)
 
@@ -109,7 +99,22 @@ export class MainComponent implements OnInit {
       this.like(newLike.postId);
     })
   }
- 
+  loadMorePosts(){
+    console.log("loadPost before :",this.loadPost)
+    if(this.loadPost <= posts.postArray.length){ 
+    this.loadPost = this.loadPost + 10
+    console.log("this.loadPost after :",this.loadPost)
+    this.postsService.getPost(this.loadPost);
+    setTimeout(() => {
+      this.allPosts = posts.postArray;
+    console.log("post length on load more :: ",this.allPosts.length);
+    this.loadButton = true
+    }, 2000)
+  }else if(this.loadPost > posts.postArray.length){
+    this.loadButton = false;
+    console.log("loadButton",this.loadButton)
+  }
+  }
   like(postId: any) {
     console.log("this.allPosts.length", this.allPosts.length);
     console.log("postId", postId);

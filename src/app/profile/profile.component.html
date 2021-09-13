@@ -23,9 +23,11 @@
   <h3>Posts</h3>
 </mat-toolbar>
 
-<mat-card class="example-card" *ngFor="let allPosts of allPosts" >
+<div class="posts">
+<mat-card class="example-card" *ngFor="let allPosts of allPosts">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"  [ngStyle]="{ 'background-image': allPosts.profileUrl}"></div>
+    <!-- [ngStyle]="{ 'background-image': allPosts.profileUrl}" -->
+    <div mat-card-avatar class="example-header-image" style="background-image: 'allPosts.profileUrl';" ></div>
     <mat-card-title>{{allPosts.userName}}</mat-card-title>
     <mat-card-subtitle>{{allPosts.timeStamp}}</mat-card-subtitle>
   </mat-card-header>
@@ -37,12 +39,23 @@
   </mat-card-content>
   <mat-card-actions>
     <div class="like">
-    <button mat-icon-button class="likeButton" (click)="like(allPosts.userName)">
-      <mat-icon><span class="material-icons-outlined">
-      favorite_border
-      </span></mat-icon></button>
-    <h4 class="likeCount">{{likeCount}}</h4>
+    <button mat-icon-button (click)="like(allPosts._id)">
+      <span class="material-icons">
+        favorite
+        </span></button>
+    <h4 class="likeCount">{{allPosts.like.length}}</h4>
+    <button mat-button (click)="openComment(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
       </div>
-    <button mat-button class="comment">Add a comment here ..</button>
+   <mat-form-field class="comment" appearance="fill">
+    <mat-label>add a comment</mat-label>
+    <input matInput type="text" [(ngModel)]="value">
+    <span class="example-spacer1"></span>
+  </mat-form-field>
+  <button mat-button class="commentButton" (click) = "commentUp(value,allPosts._id)">
+    post</button>
   </mat-card-actions>
 </mat-card>
+<br><br>
+<button mat-raised-button color="accent" *ngIf="loadButton" class="loadMore" (click)="loadMorePosts()">load Post</button>
+<br><br>
+</div> 

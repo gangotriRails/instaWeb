@@ -35,8 +35,11 @@
       post</button>
     </mat-card-actions>
   </mat-card>
+  <br><br>
+<button mat-raised-button color="accent" *ngIf="loadButton" class="loadMore" (click)="loadMorePosts()">load Post</button>
 <br><br>
 </div> 
+
 <mat-card class="userList">
   <div class="myUser">
     <img class="profileImg" [src]="url" alt="hi">

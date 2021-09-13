@@ -22,7 +22,7 @@
   }
   
   .profileImg {
-    float: left;
+  float: left;
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -116,4 +116,11 @@ commentButton{
 
 .CommentsAll{
   color: blue;
+}
+.loadMore{
+  float: left;
+  clear: left;
+  width: 600px;
+  margin-left: 6%;
+  height: fit-content;
 }

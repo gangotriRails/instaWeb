@@ -28,6 +28,7 @@
       <h3 class="userName">{{comment.userName}} - </h3>
       <h4 class="commentList"> {{comment.newComment}}</h4><br>
     </div>
+    <button mat-raised-button color="accent" *ngIf="!loadButton" (click)="loadMoreComments()">Load More</button>
     <br>
   </mat-card>
   <div class="container">

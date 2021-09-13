@@ -5,6 +5,7 @@ import { EditComponent } from '../edit/edit.component';
 import { PostsService } from '../services/posts.service';
 import { posts, myPosts } from '../models/posts.model';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommentsComponent } from '../main/comments/comments.component';
 
 
 @Component({
@@ -30,7 +31,12 @@ export class ProfileComponent implements OnInit {
   allPostsCaption: any;
   likeCount: any = 0;
   myPosts:any
-
+  loadPost:number;
+  likesValue:string;
+  currentComments:string ;
+  commentValue: any;
+  value: string;
+  loadButton:boolean;
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userName = this.authService.getUserName();
@@ -47,29 +53,102 @@ export class ProfileComponent implements OnInit {
     this.isLoadingfromServer = true;
     var profile = this.authService.getProfile();
     this.url = profile;
-    this.postsService.getPost();
+    this.loadPost = 10;
+    this.postsService.getPost(this.loadPost);
 
     setTimeout(() => {
-      this.allPosts = myPosts.myPostArray
-      for (let i = 0; i < posts.postArray.length; i++) {
-      
-        this.allPostsUser = this.allPosts[i].userName
-        this.allPostsProfileUrl = this.allPosts[i].profileUrl
-        this.allPostsUrl = this.allPosts[i].postUrl
-        this.allPostsTimeStamp = this.allPosts[i].timeStamp
-        this.allPostsCaption = this.allPosts[i].caption
+      this.allPosts = posts.postArray
+      console.log("length ::", this.allPosts.length)
+    }, 1000);
+    this.postsService.commentChanged.subscribe(newComment => {
+      this.commentUp(newComment.value, newComment.postId);
+    })
+    this.postsService.likeChanged.subscribe(newLike => {
+      this.like(newLike.postId);
+    })
+  }
+
+  like(postId: any) {
+    console.log("this.allPosts.length", this.allPosts.length);
+    console.log("postId", postId);
+
+    for (let i = 0; i < this.allPosts.length; i++) {
+    console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
+
+      if (this.allPosts[i]._id == postId) {
+        if(this.allPosts[i].like.includes(this.userName)) {
+          this.allPosts[i].like.splice(this.allPosts[i].like.indexOf(this.userName), 1);
+        } else {
+          this.allPosts[i].like.push(this.userName);
+        }
+        this.likesValue = this.allPosts[i].like;
+         console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
+        break;
       }
-    }, 1000)
+    }
+    this.postsService.updatePost(postId, this.likesValue);
   }
 
-  like(name: any) {
+  openComment(postId: any) {
+    for (let i = 0; i <= this.allPosts.length; i++) {
+      if (this.allPosts[i]._id == postId) {
+        this.currentComments = this.allPosts[i].comments;
+        var PostsUser = this.allPosts[i].userName
+        var PostsProfileUrl = this.allPosts[i].profileUrl
+        var PostsUrl = this.allPosts[i].postUrl
+        var PostsTimeStamp = this.allPosts[i].timeStamp
+        var PostsCaption = this.allPosts[i].caption
+        var PostsLike = this.allPosts[i].like
+        break;
+      }
+    }
+    const dialogRef = this.dialog.open(CommentsComponent, {
+      width: '1000px',
+      data: { postId: postId,
+              comments: this.currentComments,
+              PostsUser: PostsUser,
+              PostsProfileUrl:PostsProfileUrl ,
+              PostsUrl: PostsUrl,
+              PostsTimeStamp: PostsTimeStamp,
+              PostsCaption: PostsCaption,
+              PostsLike : PostsLike
+            }
+    });
+    dialogRef.afterClosed().subscribe(result => {
 
+    });
   }
-
+  commentUp(value: any, postId: any) {
+    this.commentValue = {
+      userName: this.userName,
+      newComment: value
+    };
+    for (let i = 0; i < this.allPosts.length; i++) {
+      if (this.allPosts[i]._id == postId) {
+        this.allPosts[i].comments.push(this.commentValue);
+        break;
+      }
+    }
+    this.postsService.updatePostComment(postId, this.commentValue);
+    this.value =""
+  }
   url: any
   
-  
-  addPost() {
+  loadMorePosts(){
+    console.log("loadPost before :",this.loadPost)
+    if(this.loadPost <= posts.postArray.length){ 
+    this.loadPost = this.loadPost + 10
+    console.log("this.loadPost after :",this.loadPost)
+    this.postsService.getPost(this.loadPost);
+    setTimeout(() => {
+      this.allPosts = posts.postArray;
+    console.log("post length on load more :: ",this.allPosts.length);
+    this.loadButton = true
+    }, 2000)
+  }else if(this.loadPost > posts.postArray.length){
+    this.loadButton = false;
+    console.log("loadButton",this.loadButton)
+  }
   }
 
   editProfile() {

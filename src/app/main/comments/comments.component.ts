@@ -29,9 +29,12 @@ export class CommentsComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CommentsComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, public dialog: MatDialog, public authService: AuthService, private postsService: PostsService, private router: Router, private changeDetection: ChangeDetectorRef) { }
   value: any;
   comments: any = [];
+  loadComment:number = 10
+  loadButton:boolean
   ngOnInit(): void {
     // console.log("data", this.data.comments);
-    this.comments = this.data.comments
+      this.comments = this.data.comments.slice(0,this.loadComment)
+      console.log("intitial 10 comments",this.comments)
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userName = this.authService.getUserName();
     this.userEmail = this.authService.getUserEmail();
@@ -47,6 +50,15 @@ export class CommentsComponent implements OnInit {
         this.allPosts = posts.postArray;
       }, 2000)
 
+  }
+  loadMoreComments(){
+    if(this.loadComment <= this.data.comments.length){ 
+      this.loadButton = true
+    this.comments = this.data.comments.slice(0,this.loadComment+10)
+    this.loadComment += 10;
+  }else if(this.loadComment > this.data.comments.length){
+    this.loadButton = false
+  }
   }
   commentUp(value: any) {
     this.postsService.updatePostRealTime(this.data.postId, value);

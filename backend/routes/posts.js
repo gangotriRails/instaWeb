@@ -2,7 +2,6 @@ const authChecker = require("../middleware/auth-checker");
 const couch = require('../controllers/couch');
 const UserController = require("../controllers/user");
 const express = require("express");
-// const { timeStamp } = require("console");
 const router = express.Router();
 const multer = require('multer');
 const { response } = require("express");
@@ -69,6 +68,7 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
           comments: [],
           timestamp: timestamp
         };
+        console.log("post base 64",postUrl)
         if (!dbStatus) {
           dbCreationStatus = await couch.createDatabase("post").then(status => {
             // console.log("database creation successful", status);
@@ -126,17 +126,22 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
 });
 
 router.get("", authChecker, (req, res, next) => {
-  console.log("getting posts");
+  var postCount = req.query.postCount;
+  console.log("getting posts",postCount);
+
   var postList = [];
+  var loadedPost = []
   couch.checkDatabase('post').then(async (result) => {
     if (result) {
       await couch.getAllDocs('post').then(async (result) => {
         for (i = 0; i < result.rows.length; i++) {
           postList.push(result.rows[i].doc);
         }
+        loadedPost = postList.slice(0,postCount)
         console.log("posts Lists", postList.length)
+        console.log("loadedPost Lists ::::::::::", loadedPost.length)
         res.status(200).json({
-          postList: postList
+          postList: loadedPost
         });
       }).catch((err) => {
         // console.log("error in get all docs", err);

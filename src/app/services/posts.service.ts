@@ -105,14 +105,15 @@ export class PostsService {
       );
   }
 
-  getPost() {
+  getPost(postCount:number) {
     // // console.log("getting posts");
     posts.postArray.splice(0, posts.postArray.length)
-    myPosts.myPostArray.splice(0, myPosts.myPostArray.length)
+    myPosts.myPostArray.splice(0, myPosts.myPostArray.length);
+    // const queryParams = `?bookDbName=${bookDbName}&bookName=${bookName}`;
 
-
-    this.http.get<{ postList: any }>
-      (this.POST_BACKEND_URL).subscribe(response => {
+    let queryParams = `?postCount=${postCount}`;
+    console.log("query params : ",queryParams)
+    this.http.get<{ postList: any }>(this.POST_BACKEND_URL + queryParams).subscribe(response => {
         console.log("response on get DB", response.postList);
         this.postList = response.postList;
         for (let i = 0; i < this.postList.length; i++) {
@@ -126,20 +127,21 @@ export class PostsService {
           var caption = this.postList[i].caption;
           var postDetails = new posts(_id, userName, profileUrl, postUrl, timeStamp, like, comments, caption);
           posts.postArray.push(postDetails);
-          if (this.postList[i].name == this.currentUser) {
-            var _id = this.postList[i]._id;
-            var userName = this.postList[i].name;
-            var profileUrl = this.postList[i].profileUrl;
-            var postUrl = this.postList[i].postUrl;
-            var timeStamp = this.postList[i].timestamp;
-            var like = this.postList[i].like
-            var comments = this.postList[i].comments;
-            var caption = this.postList[i].caption;
-            myPosts.myPostArray.push(postDetails);
-            // console.log(" my posts :::", myPosts.myPostArray)
-            console.log(" my posts :::", myPosts.myPostArray.length)
+          console.log("post postArray length",posts.postArray.length)
+          // if (this.postList[i].name == this.currentUser) {
+          //   var _id = this.postList[i]._id;
+          //   var userName = this.postList[i].name;
+          //   var profileUrl = this.postList[i].profileUrl;
+          //   var postUrl = this.postList[i].postUrl;
+          //   var timeStamp = this.postList[i].timestamp;
+          //   var like = this.postList[i].like
+          //   var comments = this.postList[i].comments;
+          //   var caption = this.postList[i].caption;
+          //   myPosts.myPostArray.push(postDetails);
+          //   // console.log(" my posts :::", myPosts.myPostArray)
+          //   // console.log(" my posts :::", myPosts.myPostArray.length)
 
-          }
+          // }
         }
       });
   }
