@@ -13,11 +13,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/data", express.static(path.join("backend/data")));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/data", express.static(path.join("backend/data")));
 app.use("/", express.static(path.join(__dirname, "Insta-Web")));
 
 app.use((req, res, next) => {

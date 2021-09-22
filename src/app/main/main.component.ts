@@ -184,7 +184,8 @@ export class MainComponent implements OnInit {
       this.loadPost = 10;
       this.postsService.getPost(this.loadPost).then(res => {
         this.allPosts = res['postList']
-        console.log("all posts", this.allPosts)
+        console.log("all posts", this.allPosts.length)
+       this.allPosts= this.allPosts.reverse();
       })
     });
   }

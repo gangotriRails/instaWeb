@@ -127,10 +127,10 @@ router.get("", authChecker, (req, res, next) => {
   couch.checkDatabase('post').then(async (result) => {
     if (result) {
       await couch.getAllDocs('post').then(async (result) => {
-        for (i = 0; i < result.rows.length; i++) {
+        for (let i = 0;i<result.rows.length; i++) {
           postList.push(result.rows[i].doc);
         }
-        loadedPost = postList.slice(0,postCount)
+        loadedPost = postList.reverse().slice(0,postCount)
         console.log("posts Lists", postList.length)
         console.log("loadedPost Lists ::::::::::", loadedPost.length)
         res.status(200).json({
