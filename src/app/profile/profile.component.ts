@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { EditComponent } from '../edit/edit.component';
 import { PostsService } from '../services/posts.service';
-import { posts, myPosts } from '../models/posts.model';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommentsComponent } from '../main/comments/comments.component';
 
@@ -15,51 +14,57 @@ import { CommentsComponent } from '../main/comments/comments.component';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, public authService: AuthService, private postsService: PostsService, private router: Router) { }
+  constructor(private zone: NgZone, public dialog: MatDialog, public authService: AuthService, private postsService: PostsService, private router: Router) { }
   userIsAuthenticated = false;
   userName: string;
   userEmail: string;
   fullName: string;
-  authListenerSubs: any;
   isLoading: boolean;
-  isLoadingfromServer: any;
-  public allPosts: any = [];
-  allPostsUser: any;
-  allPostsProfileUrl: any;
-  allPostsUrl: any;
-  allPostsTimeStamp: any;
-  allPostsCaption: any;
-  likeCount: any = 0;
-  myPosts:any
-  loadPost:number;
-  likesValue:string;
-  currentComments:string ;
-  commentValue: any;
+  url: string
+  allPosts: any[] = []
+  posts: any[] = []
+  loadPost: number;
   value: string;
-  loadButton:boolean;
+  loadButton: boolean;
+
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userName = this.authService.getUserName();
     this.userEmail = this.authService.getUserEmail();
-    this.fullName = this.authService.getUserFullName();
-    this.authListenerSubs = this.authService
+    var authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
         this.userName = this.authService.getUserName();
-        this.fullName = this.authService.getUserFullName();
+        this.fullName = "hi"
       });
-
-    this.isLoadingfromServer = true;
-    var profile = this.authService.getProfile();
-    this.url = profile;
+    this.postsService.getUsers().then(res => {
+      var allUsers :any[] = [];
+      allUsers = res['userList']
+      console.log("userList : ", res['userList'])
+      for(let i=0;i< allUsers.length;i++){
+        console.log("No :",i,"User :",allUsers[i].userName)
+        console.log("userName :",this.userName)
+        if(allUsers[i].userName == this.userName){
+          this.fullName = allUsers[i].fullName;
+          this.url = allUsers[i].profile
+          console.log("fullName :",this.fullName);
+          console.log("profile : ",this.url)
+        }
+      }
+    })
     this.loadPost = 10;
-    this.postsService.getPost(this.loadPost);
+    this.postsService.getPost(this.loadPost).then(res => {
+      this.posts = res['postList']
+      for (let i = 0; i < this.posts.length; i++) {
+        if (this.posts[i].name == this.userName) {
+          this.allPosts.push(this.posts[i])
+          console.log("posts :::: ", this.allPosts)
 
-    setTimeout(() => {
-      this.allPosts = posts.postArray
-      console.log("length ::", this.allPosts.length)
-    }, 1000);
+        }
+      }
+    })
+
     this.postsService.commentChanged.subscribe(newComment => {
       this.commentUp(newComment.value, newComment.postId);
     })
@@ -67,32 +72,60 @@ export class ProfileComponent implements OnInit {
       this.like(newLike.postId);
     })
   }
+  navToPosts(postId: string) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        "postId": postId,
+      }
+    }
+    this.zone.run(() => {
+      this.router.navigate(["/post"], navigationExtras);
+    });
+  }
 
-  like(postId: any) {
-    console.log("this.allPosts.length", this.allPosts.length);
-    console.log("postId", postId);
-
+  like(postId: string) {
     for (let i = 0; i < this.allPosts.length; i++) {
-    console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
-
       if (this.allPosts[i]._id == postId) {
-        if(this.allPosts[i].like.includes(this.userName)) {
+        if (this.allPosts[i].like.includes(this.userName)) {
           this.allPosts[i].like.splice(this.allPosts[i].like.indexOf(this.userName), 1);
         } else {
           this.allPosts[i].like.push(this.userName);
         }
-        this.likesValue = this.allPosts[i].like;
-         console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
+        var likesValue = this.allPosts[i].like;
         break;
       }
     }
-    this.postsService.updatePost(postId, this.likesValue);
+    let postDetail = {
+      postId: postId,
+      newLike: likesValue
+    }
+    this.postsService.updatePost(postDetail);
   }
 
-  openComment(postId: any) {
+
+  commentUp(value: string, postId: string) {
+    var commentValue = {
+      userName: this.userName,
+      newComment: value
+    };
+    for (let i = 0; i < this.allPosts.length; i++) {
+      if (this.allPosts[i]._id == postId) {
+        this.allPosts[i].comments.push(commentValue);
+        break;
+      }
+    }
+    let postDetail = {
+      postId: postId,
+      newComment: commentValue
+    }
+    this.postsService.updatePost(postDetail);
+    this.value = ""
+  }
+
+  openCommentDialog(postId: any) {
     for (let i = 0; i <= this.allPosts.length; i++) {
       if (this.allPosts[i]._id == postId) {
-        this.currentComments = this.allPosts[i].comments;
+        var currentComments = this.allPosts[i].comments;
         var PostsUser = this.allPosts[i].userName
         var PostsProfileUrl = this.allPosts[i].profileUrl
         var PostsUrl = this.allPosts[i].postUrl
@@ -104,51 +137,30 @@ export class ProfileComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(CommentsComponent, {
       width: '1000px',
-      data: { postId: postId,
-              comments: this.currentComments,
-              PostsUser: PostsUser,
-              PostsProfileUrl:PostsProfileUrl ,
-              PostsUrl: PostsUrl,
-              PostsTimeStamp: PostsTimeStamp,
-              PostsCaption: PostsCaption,
-              PostsLike : PostsLike
-            }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
-  }
-  commentUp(value: any, postId: any) {
-    this.commentValue = {
-      userName: this.userName,
-      newComment: value
-    };
-    for (let i = 0; i < this.allPosts.length; i++) {
-      if (this.allPosts[i]._id == postId) {
-        this.allPosts[i].comments.push(this.commentValue);
-        break;
+      data: {
+        postId: postId,
+        comments: currentComments,
+        PostsUser: PostsUser,
+        PostsProfileUrl: PostsProfileUrl,
+        PostsUrl: PostsUrl,
+        PostsTimeStamp: PostsTimeStamp,
+        PostsCaption: PostsCaption,
+        PostsLike: PostsLike
       }
+    });
+  }
+
+
+  loadMorePosts() {
+    if (this.loadPost <= this.allPosts.length) {
+      this.loadButton = true;
+      this.loadPost = this.loadPost + 10
+      this.postsService.getPost(this.loadPost).then(res => {
+        this.allPosts = res['postList']
+      })
+    } else if (this.loadPost > this.allPosts.length) {
+      this.loadButton = false;
     }
-    this.postsService.updatePostComment(postId, this.commentValue);
-    this.value =""
-  }
-  url: any
-  
-  loadMorePosts(){
-    console.log("loadPost before :",this.loadPost)
-    if(this.loadPost <= posts.postArray.length){ 
-    this.loadPost = this.loadPost + 10
-    console.log("this.loadPost after :",this.loadPost)
-    this.postsService.getPost(this.loadPost);
-    setTimeout(() => {
-      this.allPosts = posts.postArray;
-    console.log("post length on load more :: ",this.allPosts.length);
-    this.loadButton = true
-    }, 2000)
-  }else if(this.loadPost > posts.postArray.length){
-    this.loadButton = false;
-    console.log("loadButton",this.loadButton)
-  }
   }
 
   editProfile() {
@@ -157,6 +169,8 @@ export class ProfileComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.isLoading = false;
+      this.authService.logout();
+
     });
   }
 }

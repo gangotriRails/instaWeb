@@ -1,44 +1,45 @@
 <div class="container">
-<mat-card class="example-card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image" [ngStyle]="{ 'background-image': data.PostsProfileUrl}"></div>
-    <mat-card-title>{{data.PostsUser}}</mat-card-title>
-    <mat-card-subtitle>{{data.PostsTimeStamp}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="data.PostsUrl" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-      {{data.PostsCaption}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <div class="like">
-      <button mat-icon-button class="likeButton" (click)="like(data.postId)" >
-        <mat-icon><span class="material-icons-outlined">
-            favorite_border
-          </span></mat-icon>
-      </button>
-      <h4 class="likeCount">{{data.PostsLike.length}}</h4>
-    </div>
-  </mat-card-actions>
-</mat-card>
-<div class="commentDiv">
-  <mat-card class="commentsCard">
-    <div *ngFor=" let comment of comments">
-      <h3 class="userName">{{comment.userName}} - </h3>
-      <h4 class="commentList"> {{comment.newComment}}</h4><br>
-    </div>
-    <button mat-raised-button color="accent" *ngIf="!loadButton" (click)="loadMoreComments()">Load More</button>
-    <br>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ data.PostsProfileUrl +')'">
+      </div>
+      <mat-card-title>{{data.PostsUser}}</mat-card-title>
+      <mat-card-subtitle>{{data.PostsTimeStamp}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="data.PostsUrl" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>
+        {{data.PostsCaption}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="like">
+        <button mat-icon-button class="likeButton">
+          <mat-icon><span class="material-icons-outlined">
+              favorite_border
+            </span></mat-icon>
+        </button>
+        <h4 class="likeCount">{{data.PostsLike.length}}</h4>
+      </div>
+    </mat-card-actions>
   </mat-card>
-  <div class="container">
-  <mat-form-field class="comment" appearance="fill">
-    <mat-label>add a comment</mat-label>
-    <input matInput type="text" [(ngModel)]="value">
-    <span class="example-spacer1"></span>
-  </mat-form-field>
-  <button mat-button class="commentButton" (click)="commentUp(value)" [mat-dialog-close]="true">
-    post</button>
+  <div class="commentDiv">
+    <mat-card class="commentsCard">
+      <div *ngFor=" let comment of comments">
+        <h3 class="userName">{{comment.userName}} - </h3>
+        <h4 class="commentList"> {{comment.newComment}}</h4><br>
+      </div>
+      <button mat-raised-button color="accent" *ngIf="!loadButton" (click)="loadMoreComments()">Load More</button>
+      <br>
+    </mat-card>
+    <div class="container">
+      <mat-form-field class="comment" appearance="fill">
+        <mat-label>add a comment</mat-label>
+        <input matInput type="text" [(ngModel)]="value">
+        <span class="example-spacer1"></span>
+      </mat-form-field>
+      <button mat-button class="commentButton" (click)="commentUp(value)">
+        post</button>
+    </div>
   </div>
-</div>
 </div>

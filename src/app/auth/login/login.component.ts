@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from "rxjs";
+import { LogInData } from '../auth-data.model';
 import { AuthService } from "../auth.service";
 
 
@@ -30,11 +31,12 @@ export class LoginComponent implements OnInit {
 
  
   onLogin(form:NgForm){
-  // console.log("logging In ",form.value);
+  console.log("logging In ",form.value.email);
   if (form.invalid) {
     return;
   }
   this.isLoading = true;
-  this.authService.login(form.value.userName, form.value.password);
+  const logInData: LogInData = { email: form.value.email, password: form.value.password };
+  this.authService.login(logInData);
 }
 }

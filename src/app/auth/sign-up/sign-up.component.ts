@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Subscription } from "rxjs";
+import { HtmlAstPath } from '@angular/compiler';
+import { AuthData } from '../auth-data.model';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,9 +14,7 @@ export class SignUpComponent implements OnInit {
 
   constructor(private authService:AuthService) { }
   private authStatusSub: Subscription;
-
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
       authStatus => {
         this.isLoading = false;
@@ -26,9 +26,8 @@ export class SignUpComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    // console.log("signing Up")
     this.isLoading = true;
-    this.authService.createUser(form.value.email, form.value.fullName,form.value.userName,form.value.password);
-
+    const authData: AuthData = { email: form.value.email,fullName:form.value.fullName,userName:form.value.userName,profile:"assets/images/default.png", password: form.value.password};
+    this.authService.createUser(authData);
   }
 }

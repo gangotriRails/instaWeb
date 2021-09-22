@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import * as $ from 'jquery';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PostsService } from 'src/app/services/posts.service';
@@ -13,57 +13,71 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class PostDialogComponent implements OnInit {
 
-  constructor(private postService: PostsService, public authService: AuthService,) { }
+  constructor(public dialogRef: MatDialogRef<PostDialogComponent>, private postService: PostsService, public authService: AuthService,) { }
   userIsAuthenticated = false;
   userName: string;
   userEmail: string;
   fullName: string;
-  authListenerSubs: any;
-  isLoading: boolean;
-  isLoadingfromServer: any;
-  profileImg: any;
+
+  profileImg: string;
+  postImg: string;
+
+
   ngOnInit(): void {
     $("#postImg").hide();
     this.userIsAuthenticated = this.authService.getIsAuth();
-    // console.log("this.userIsAuthenticated", this.userIsAuthenticated)
     this.userName = this.authService.getUserName();
-    // console.log("this.userName", this.userName);
     this.userEmail = this.authService.getUserEmail();
-    // console.log("UserEmail", this.userEmail);
-    this.fullName = this.authService.getUserFullName();
-    // console.log("fullName", this.fullName)
-    this.authListenerSubs = this.authService
+    // this.fullName = "hi"
+    var authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
         this.userName = this.authService.getUserName();
-        this.fullName = this.authService.getUserFullName();
+        this.fullName = "Hi"
       });
-    this.isLoadingfromServer = true;
-    var profile = this.authService.getProfile();
-    // console.log("++++++++++++++++++", profile)
-    this.profileImg = profile
+    // this.profileImg = "assets/images/default.png"
+    this.postService.getUsers().then(res => {
+      var allUsers :any[] = [];
+      allUsers = res['userList']
+      console.log("userList : ", res['userList'])
+      for(let i=0;i< allUsers.length;i++){
+        console.log("No :",i,"User :",allUsers[i].userName)
+        console.log("userName :",this.userName)
+        if(allUsers[i].userName == this.userName){
+          this.fullName = allUsers[i].fullName;
+          this.profileImg = allUsers[i].profile
+          console.log("fullName :",this.fullName);
+          console.log("profile : ",this.profileImg)
+        }
+      }
+    })
   }
-  postImg: any;
+
   onSelectFile(event: any) {
     $("#postImg").show();
-    // console.log("selection Image")
     if (event.target.files && event.target.files[0]) {
-      var reader: any = new FileReader();
-      reader.readAsDataURL(event.target.files[0]); // read file as data postImg
-      reader.onload = (event: any) => { // called once readAsDataURL is completed
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event: any) => {
         this.postImg = event.target.result;
       }
-      // console.log("postImg : ", this.postImg)
     }
   }
-  postUp(form: NgForm) {
-    // console.log("postImg : ", this.postImg)
-    // console.log("profileImg : ", this.profileImg)
 
-    // console.log("userName : ", this.userName)
-    // console.log("form.value.caption : ", form.value.caption)
-
-    this.postService.post(this.userName, this.profileImg, this.postImg, form.value.caption);
+  addPost(form: NgForm) {
+    var today = new Date();
+    var date = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0')
+      + '/' + today.getFullYear();
+    var currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })
+    var timestamp = date + " (" + currentTime + ") "
+    let postData = new FormData();
+    postData.append('userName', this.userName);
+    postData.append('profileImg', this.profileImg);
+    postData.append('postImg', this.postImg);
+    postData.append('caption', form.value.caption);
+    postData.append('timestamp', timestamp)
+    this.postService.post(postData);
+    this.dialogRef.close();
   }
 }

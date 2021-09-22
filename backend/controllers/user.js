@@ -7,9 +7,11 @@ const couch = require("./couch");
 // User Login
 exports.userLogin = async (req, res, next) => {
   userEmail = req.body.email;
+  console.log("userEmail :",userEmail)
   password = req.body.password;
-  let userInfo,perUserDb;
+  let userInfo;
   await couch.authenticateUser(userEmail, password).then(async (status) => {
+    console.log("status in auth checher :",status)
     if(status == true) {
       await couch.findUser("_users",userEmail).then(async (response) => {
         if (response.statusCode == 404) {
@@ -20,11 +22,11 @@ exports.userLogin = async (req, res, next) => {
           if (response.documents.docs.length == 1) {
             userInfo = response.documents.docs[0];
               const token = jwt.sign(
-                { email: userInfo.email, userId: userInfo.userId},
+                { email: userInfo.email, userId: userInfo._id},
                 process.env.JWT_KEY,
                 { expiresIn: "365d" }
               );
-              // console.log("Sending login successful response");
+              console.log("Sending login successful response");
               if (process.env.COUCH_DB_PROVIDER == "IBM_CLOUDANT") {
                 couchDbAdminUrl = "https://" + encodeURIComponent(userInfo.name) + ":" + encodeURIComponent(password) + "@" + process.env.COUCH_DB_HOST;
               } else {
@@ -33,31 +35,21 @@ exports.userLogin = async (req, res, next) => {
               res.status(200).json({
                 token: token,
                 expiresIn: 31536000,
-                userId: userInfo.userId,
-                email: userInfo.email,
-                fullName:userInfo.fullName,
-                userName:userInfo.userName,
-                profile:userInfo.profile,
-                role: userInfo.roles,
-                bio:userInfo.bio,
-                phone:userInfo.phone,
-                gender:userInfo.gender,
-                dbUrl: couchDbAdminUrl,
-                userDb: perUserDb,
-                userDbKey: userInfo.name,
-                userDbPwd: password
+                email: userInfo.name,
+                userId: userInfo._id,
+                userName:userInfo.userName
               });
           }
         }
       });
     } else {
-      // console.log("CouchDb Authentication failed");
+      console.log("CouchDb Authentication failed");
       return res.status(401).json({
         message: "Invalid credentials"
       });
     }
   }).catch(err => {
-    // console.log("error while authenticating user");
+    console.log("error while authenticating user");
     return res.status(401).json({
       message: "Invalid credentials"
     });
@@ -66,31 +58,30 @@ exports.userLogin = async (req, res, next) => {
 
 // User Creation
 exports.createUser = async (req, res, next) => {
-  console.log("entered createUser in user.js");
   await couch.findUser("_users",req.body.email).then(async (response) => {
-    // console.log("Got Output from Cloudant find function on createUser");
+    console.log("Got Output from Cloudant find function on createUser");
     if (response.statusCode == 404) {
-      // console.log("User not found");
-      var id = "org.couchdb.user:"+ req.body.userName;
+      console.log("User not found");
+      var id = "org.couchdb.user:"+req.body.email;
       var userIdHash = await crypto.createHash('sha1').update(req.body.email).digest('hex');
+      
       const clouadnt_user = {
         _id: id,
         userId: userIdHash,
-        name: req.body.userName,
+        name: req.body.email,
         roles:["user"],
-        email:req.body.email,
         fullName:req.body.fullName,
         userName:req.body.userName,
         profile:req.body.profile,
-        bio:"",
-        phone:"",
-        gender:"",
+        bio:null,
+        phone:null,
+        gender:null,
         password: req.body.password,
         password_scheme: 'simple',
         type: "user"
       };
+      console.log("cloudant : ",clouadnt_user)
       couch.insertDocument('_users',clouadnt_user).then((result) => {
-       // console.log("result :", result)
         if (result.ok == true) {
           res.status(201).json({
             message: "User created!"
@@ -102,11 +93,11 @@ exports.createUser = async (req, res, next) => {
         }
       });
     } else {
-      // console.log("whatsHappening")
-      // console.log("Please use different mail id as it already exists");
+      console.log("Please use different mail id as it already exists");
       res.status(500).json({
         message: "User Id already exists. Please use different Id"
       });
     }
   });
 }
+

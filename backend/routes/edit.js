@@ -55,17 +55,17 @@ router.post("",authChecker,multer({ storage: storage, fileFilter: fileFilter }).
     gender = req.body.gender;
     console.log("gender : ",gender);
     editingurl = req.body.url;
-    console.log("url :", editingurl);
+    // console.log("url :", editingurl);
     resultId = "";
     couch.findUser("_users", editingName).then( (response) => {
-       // console.log("user find",response);
+       console.log("user find",response);
        if (response.statusCode == 404) {
                  // console.log("User not found");
                  res.status(500).json({
                    message: "editing  failed!!!"
                  });
                } else {
-                 // console.log("user already exists");
+                 console.log("user already exists");
                   couch.getAllDocsMetaData("_users").then( (result) => {
                    if (result.rows.length > 0) {
                      for (let i = 0; i < result.rows.length; i++) {
@@ -76,42 +76,56 @@ router.post("",authChecker,multer({ storage: storage, fileFilter: fileFilter }).
                    }
                      }
                      couch.findById("_users", resultId).then((response) => {
-                       // console.log("respose in userserr", response.documents.docs[0]);
-                       resetPasswordUserInfo = response.documents.docs[0];
+                      resetPasswordUserInfo = response.documents.docs[0];
+                      // console.log("respose in userserr", response.documents.docs[0]);
+                       if(editingEmail != ""){
+                         console.log("email is not empty")
                        resetPasswordUserInfo["email"] = editingEmail;
+                       }
+                       if(bio != 'undefined'){ 
                        resetPasswordUserInfo["bio"] = bio;
+                      }
+                      if(phone != ""){
                        resetPasswordUserInfo["phone"] = phone;
+                      }
+                      if(gender != ""){ 
                        resetPasswordUserInfo["gender"] = gender;
+                      }
                        resetPasswordUserInfo["profile"] = editingurl;
+                       if(editingPassword != ""){ 
                        delete resetPasswordUserInfo.salt;
                        delete resetPasswordUserInfo.password_sha;
                        resetPasswordUserInfo["password"] = editingPassword;
-                        // console.log("resetPassword : ",resetPasswordUserInfo)
+                      }
+                        console.log("resetPassword : ",resetPasswordUserInfo)
                         couch.insertDocument("_users", resetPasswordUserInfo).then((result) => {
                          // console.log("editing Document result", result);
                          if (result.ok == true) {
-                           
-                           // console.log("editing successfull");
+                           console.log("editing successfull");
                            res.status(201).json({
                              message: "editing successfull"
                            });
                          } else {
-                           // console.log("editing users failed");
+                           console.log("editing users failed");
+                           res.status(200).json({
+                            message: "editing failed",
+                            
+                          });
                          }
                        });
                        
                      }).catch((err) => {
-                       // console.log(err);
+                       console.log(err);
                      });
                    }
                }).catch((err) => {
-                   // console.log(err);
+                   console.log(err);
                  });
                  
                }
  
      }).catch((err) => {
-       // console.log("err :", err);
+       console.log("err :", err);
      })
 })
 

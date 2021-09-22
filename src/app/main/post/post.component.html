@@ -1,0 +1,33 @@
+<app-header></app-header>
+<br>
+<br>
+<mat-card class="example-card" *ngIf="isPost">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ profileUrl +')'" ></div>
+      <mat-card-title>{{userName}}</mat-card-title>
+      <mat-card-subtitle>{{timeStamp}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="postUrl" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>
+       {{caption}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="like">
+      <button mat-icon-button>
+        <span class="material-icons">
+          favorite
+          </span></button>
+      <h4 class="likeCount">{{likes.length}}</h4>
+      <button mat-button  class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{comments.length}})</h4></button>
+        </div>
+     <mat-form-field class="comment" appearance="fill">
+      <mat-label>add a comment</mat-label>
+      <input matInput type="text" [(ngModel)]="value">
+      <span class="example-spacer1"></span>
+    </mat-form-field>
+    <button mat-button class="commentButton">
+      post</button>
+    </mat-card-actions>
+  </mat-card>

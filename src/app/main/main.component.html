@@ -5,11 +5,12 @@
     <button mat-fab class="add" (click)="addPost()">
       <mat-icon class="icon">add_circles</mat-icon>
     </button>
-  <mat-card class="example-card" *ngFor="let allPosts of allPosts">
+  <mat-card class="example-card" *ngFor="let allPosts of allPosts"  >
+   <div (click)="navToPosts(allPosts._id)">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"  [ngStyle]="{ 'background-image': allPosts.profileUrl}"></div>
-      <mat-card-title>{{allPosts.userName}}</mat-card-title>
-      <mat-card-subtitle>{{allPosts.timeStamp}}</mat-card-subtitle>
+      <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ allPosts.profileUrl +')'" ></div>
+      <mat-card-title>{{allPosts.name}}</mat-card-title>
+      <mat-card-subtitle>{{allPosts.timestamp}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image [src]="allPosts.postUrl" alt="Photo of a Shiba Inu">
     <mat-card-content>
@@ -17,14 +18,15 @@
        {{allPosts.caption}}
       </p>
     </mat-card-content>
+  </div>
     <mat-card-actions>
       <div class="like">
-      <button mat-icon-button [id]="allPosts._id" (click)="like(allPosts._id)">
+      <button mat-icon-button  (click)="like(allPosts._id)">
         <span class="material-icons">
           favorite
           </span></button>
       <h4 class="likeCount">{{allPosts.like.length}}</h4>
-      <button mat-button (click)="openComment(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
+      <button mat-button (click)="openCommentDialog(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
         </div>
      <mat-form-field class="comment" appearance="fill">
       <mat-label>add a comment</mat-label>
@@ -44,16 +46,15 @@
   <div class="myUser">
     <img class="profileImg" [src]="url" alt="hi">
     <h3 class="name">{{userName}}</h3>
-  
     <a class="Switch" routerLink="/login"><h4>Switch Account</h4></a>
   </div><br><br>
   <div class="otherUser">
     <h4 class="suggestion">Suggestions For You</h4>
     <br>
-    <div *ngFor = "let allUsers of allUsers">
-      <img class="allprofileImg" [src]="allUsers.userProfile" alt="hi">
+    <div class="containUser" *ngFor = "let allUsers of allUsers">
+      <img class="allprofileImg" [src]="allUsers.profile" alt="userProfile">
       <h3 class="name">{{allUsers.userName}}</h3><br>
-      <h5>{{allUsers.userFullName}}</h5>
+      <h5>{{allUsers.fullName}}</h5>
     </div><br><br>
 </div>
 </mat-card>

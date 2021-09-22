@@ -1,61 +1,64 @@
 <app-header></app-header><br>
 <mat-card class="profileCard">
-<button mat-button class="profileImg">
-<img  class="profile" [src]="url" alt="hi"> 
-</button>
-<div class="details">
-<h1 style="font-style: oblique;margin-left: 10%;font-weight: bold;">{{userName}}</h1>
-<h3 style="font-style: oblique;margin-left: 10%;">{{fullName}}</h3>
-</div>
-
-<div class="editProfile">
-  <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="editProfile()">
-    <mat-icon class="icon"><span class="material-icons-outlined">
-      edit
-      </span></mat-icon>
-    <h5 class="text">Edit Profile</h5>
+  <button mat-button class="profileImg">
+    <img class="profile" [src]="url" alt="hi">
   </button>
-</div>
+  <div class="details">
+    <h1 style="font-style: oblique;margin-left: 10%;font-weight: bold;">{{userName}}</h1>
+    <h3 style="font-style: oblique;margin-left: 10%;">{{fullName}}</h3>
+  </div>
+
+  <div class="editProfile">
+    <button mat-stroked-button class="iconText" *ngIf="userIsAuthenticated" (click)="editProfile()">
+      <mat-icon class="icon"><span class="material-icons-outlined">
+          edit
+        </span></mat-icon>
+      <h5 class="text">Edit Profile</h5>
+    </button>
+  </div>
 </mat-card>
-<br/>
+<br />
 
 <mat-toolbar>
   <h3>Posts</h3>
 </mat-toolbar>
 
 <div class="posts">
-<mat-card class="example-card" *ngFor="let allPosts of allPosts">
-  <mat-card-header>
-    <!-- [ngStyle]="{ 'background-image': allPosts.profileUrl}" -->
-    <div mat-card-avatar class="example-header-image" style="background-image: 'allPosts.profileUrl';" ></div>
-    <mat-card-title>{{allPosts.userName}}</mat-card-title>
-    <mat-card-subtitle>{{allPosts.timeStamp}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="allPosts.postUrl" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-     {{allPosts.caption}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <div class="like">
-    <button mat-icon-button (click)="like(allPosts._id)">
-      <span class="material-icons">
-        favorite
-        </span></button>
-    <h4 class="likeCount">{{allPosts.like.length}}</h4>
-    <button mat-button (click)="openComment(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
-      </div>
-   <mat-form-field class="comment" appearance="fill">
-    <mat-label>add a comment</mat-label>
-    <input matInput type="text" [(ngModel)]="value">
-    <span class="example-spacer1"></span>
-  </mat-form-field>
-  <button mat-button class="commentButton" (click) = "commentUp(value,allPosts._id)">
-    post</button>
-  </mat-card-actions>
-</mat-card>
-<br><br>
-<button mat-raised-button color="accent" *ngIf="loadButton" class="loadMore" (click)="loadMorePosts()">load Post</button>
-<br><br>
-</div> 
+  <mat-card class="example-card" *ngFor="let allPosts of allPosts"  >
+  <div (click)="navToPosts(allPosts._id)">
+   <mat-card-header>
+     <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ allPosts.profileUrl +')'" ></div>
+     <mat-card-title>{{allPosts.name}}</mat-card-title>
+     <mat-card-subtitle>{{allPosts.timestamp}}</mat-card-subtitle>
+   </mat-card-header>
+   <img mat-card-image [src]="allPosts.postUrl" alt="Photo of a Shiba Inu">
+   <mat-card-content>
+     <p>
+      {{allPosts.caption}}
+     </p>
+   </mat-card-content>
+ </div>
+   <mat-card-actions>
+     <div class="like">
+     <button mat-icon-button  (click)="like(allPosts._id)">
+       <span class="material-icons">
+         favorite
+         </span></button>
+     <h4 class="likeCount">{{allPosts.like.length}}</h4>
+     <button mat-button (click)="openCommentDialog(allPosts._id)" class="commentCount"><h4 ><span class="CommentsAll">View all comments </span>({{allPosts.comments.length}})</h4></button>
+       </div>
+    <mat-form-field class="comment" appearance="fill">
+     <mat-label>add a comment</mat-label>
+     <input matInput type="text" [(ngModel)]="value">
+     <span class="example-spacer1"></span>
+   </mat-form-field>
+   <button mat-button class="commentButton" (click) = "commentUp(value,allPosts._id)">
+     post</button>
+   </mat-card-actions>
+ </mat-card>
+
+  <br><br>
+  <button mat-raised-button color="accent" *ngIf="loadButton" class="loadMore" (click)="loadMorePosts()">load
+    Post</button>
+  <br><br>
+</div>

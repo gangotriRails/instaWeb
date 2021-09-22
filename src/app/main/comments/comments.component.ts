@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
-import { posts } from 'src/app/models/posts.model';
+// import { posts } from 'src/app/models/posts.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { DialogData, MainComponent } from '../main.component';
 
@@ -13,76 +13,36 @@ import { DialogData, MainComponent } from '../main.component';
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
-  public allPosts: any = [];
-  allPostsUser: any;
-  allPostsProfileUrl: any;
-  allPostsUrl: any;
-  allPostsTimeStamp: any;
-  allPostsCaption: any;
+  allPosts: any;
+
   userIsAuthenticated = false;
   userName: string;
   userEmail: string;
   fullName: string;
-  authListenerSubs: any;
-  commentValue: any;
-  likesValue:any
+
+  value: string;
+  comments: string[];
+  loadComment: number;
+  loadButton: boolean = false
   constructor(public dialogRef: MatDialogRef<CommentsComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, public dialog: MatDialog, public authService: AuthService, private postsService: PostsService, private router: Router, private changeDetection: ChangeDetectorRef) { }
-  value: any;
-  comments: any = [];
-  loadComment:number = 10
-  loadButton:boolean
+
   ngOnInit(): void {
-    // console.log("data", this.data.comments);
-      this.comments = this.data.comments.slice(0,this.loadComment)
-      console.log("intitial 10 comments",this.comments)
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userName = this.authService.getUserName();
-    this.userEmail = this.authService.getUserEmail();
-    this.fullName = this.authService.getUserFullName();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-        this.userName = this.authService.getUserName();
-      });
-
-      setTimeout(() => {
-        this.allPosts = posts.postArray;
-      }, 2000)
-
+    this.loadComment = 10;
+    this.comments = this.data.comments.slice(0, this.loadComment)
+    console.log("intitial 10 comments", this.comments)
   }
-  loadMoreComments(){
-    if(this.loadComment <= this.data.comments.length){ 
+  loadMoreComments() {
+    if (this.loadComment <= this.data.comments.length) {
       this.loadButton = true
-    this.comments = this.data.comments.slice(0,this.loadComment+10)
-    this.loadComment += 10;
-  }else if(this.loadComment > this.data.comments.length){
-    this.loadButton = false
-  }
-  }
-  commentUp(value: any) {
-    this.postsService.updatePostRealTime(this.data.postId, value);
-  }
-
-  like(postId: any) {
-    console.log("this.allPosts.length", this.allPosts.length);
-    console.log("postId", postId);
-
-    for (let i = 0; i < this.allPosts.length; i++) {
-    console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
-
-      if (this.allPosts[i]._id == postId) {
-        if(this.allPosts[i].like.includes(this.userName)) {
-          this.allPosts[i].like.splice(this.allPosts[i].like.indexOf(this.userName), 1);
-        } else {
-          this.allPosts[i].like.push(this.userName);
-        }
-        this.likesValue = this.allPosts[i].like;
-         console.log("this.allPosts[i].comments.length",this.allPosts[i].like.length);
-        break;
-      }
+      this.comments = this.data.comments.slice(0, this.loadComment + 10)
+      this.loadComment += 10;
+    } else if (this.loadComment > this.data.comments.length) {
+      this.loadButton = false
     }
-    // this.postsService.updatePost(postId, this.likesValue);
+  }
+  commentUp(value: string) {
+    this.postsService.updatePostRealTime(this.data.postId, value);
+    this.dialogRef.close();
   }
 
 }

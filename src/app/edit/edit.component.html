@@ -4,8 +4,9 @@
         <form (submit)="editForm(editUpForm)" #editUpForm="ngForm">
             <div class="profileImg">
                 <img [src]="url" alt="hi">
-                <input #fileInput type="file" hidden (change)="onSelectFile($event)">
-                <button mat-button class="changeImg" (click)="fileInput.click()">Change Your Profile</button>
+                <input class="changeImg" type="file" name="files" accept="image/*" (change)="onSelectFile($event)">
+                <!-- <input #fileInput type="file" hidden (change)="onSelectFile($event)">
+                <button mat-button class="changeImg" (click)="fileInput.click()">Change Your Profile</button> -->
             </div>
             <div class="formText">
                 <h3 class="text1">User Name :</h3>

@@ -49,17 +49,14 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
   timestamp = req.body.timestamp
   caption = req.body.caption
   couch.findUser("_users", userName).then(async (response) => {
-    // console.log("response for user find", response);
     if (response.statusCode == 404) {
-      // console.log("User not found. Sending 404 response");
       return res.status(401).json({
         message: "User cant post because user not found"
       });
     } else {
       await couch.checkDatabase("post").then(async (dbStatus) => {
-        // console.log("checking db", dbStatus)
         const postInfo = {
-          userId: "##########" + userName,
+          // userId: "##########" + userName,
           name: req.body.userName,
           profileUrl: profileUrl,
           postUrl: postUrl,
@@ -68,10 +65,8 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
           comments: [],
           timestamp: timestamp
         };
-        console.log("post base 64",postUrl)
         if (!dbStatus) {
           dbCreationStatus = await couch.createDatabase("post").then(status => {
-            // console.log("database creation successful", status);
             if (status) {
               couch.insertDocument('post', postInfo).then(async (result) => {
                 if (result.ok == true) {
@@ -85,24 +80,22 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
                   });
                 }
               }).catch((error) => {
-                // console.log("error in insertion", error);
+                console.log("error in insertion", error);
               });
               securityInfo = {};
               securityInfo[userName] = ['_admin', '_replicator', '_reader', '_writer'];
               couch.setDbSecurity('post', userName).then(async (status) => {
-                // console.log("permission granted successfully for userdb", status);
+                console.log("permission granted successfully for userdb", status);
               }).catch((err) => {
-                // console.log("error while granting permission for userdb", err);
+                console.log("error while granting permission for userdb", err);
               });
             }
-            // return status;
           }).catch((err) => {
-            // console.log("error in creating db", err);
+            console.log("error in creating db", err);
           });
         } else {
           couch.insertDocument('post', postInfo).then(async (result) => {
             if (result.ok == true) {
-              // console.log(result);
               res.status(201).json({
                 message: "posted succeffully!",
                 _id: result.id
@@ -113,15 +106,15 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
               });
             }
           }).catch((error) => {
-            // console.log("error in insertion", error);
+            console.log("error in insertion", error);
           })
         }
       }).catch((err) => {
-        // console.log("error in check db ,", err);
+        console.log("error in check db ,", err);
       })
     }
   }).catch((err) => {
-    // console.log(err)
+    console.log(err)
   })
 });
 
@@ -144,40 +137,30 @@ router.get("", authChecker, (req, res, next) => {
           postList: loadedPost
         });
       }).catch((err) => {
-        // console.log("error in get all docs", err);
         res.status(200).json({
           postList: "null"
         });
       })
     }
   }).catch((err) => {
-    // console.log(err)
   })
 })
 
 router.put("", authChecker, (req, res, next) => {
   console.log("put request id", req.body.postId);
-  // console.log("put request count", req.body.likesCount);
   if (req.body.hasOwnProperty('newComment')) {
-    // console.log("newComment", req.body.newComment);
-    // console.log("postId", req.body.postId);
-
     couch.checkDatabase('post').then(async (result) => {
       if (result) {
         await couch.findById('post', req.body.postId).then(async (response) => {
-          // console.log("respose in fetched posts", response.documents.docs[0]);
           postInfo = response.documents.docs[0];
           postInfo.comments.push(req.body.newComment);
           await couch.insertDocument('post', postInfo).then((result) => {
-            // console.log("insert comment Document result", result);
             if (result.ok == true) {
-              // console.log("comment has been updated in post database");
               res.status(200).json({
                 message: req.body.postId + "has been updated with comment successfully",
                 updated: "Y"
               });
             } else {
-              // console.log("Inserting comment to post failed");
               res.status(200).json({
                 message: req.body.postId + "comment update failed",
                 updated: "N"
@@ -185,7 +168,6 @@ router.put("", authChecker, (req, res, next) => {
             }
           });
         }).catch((err) => {
-          // console.log(err);
           res.status(200).json({
             message: req.body.postId + "comment update failed",
             updated: "N"
@@ -193,7 +175,6 @@ router.put("", authChecker, (req, res, next) => {
         });
       }
     }).catch((err) => {
-      // console.log("err ", err);
       res.status(200).json({
         message: req.body.postId + "update failed",
         updated: "N"
@@ -233,7 +214,6 @@ router.put("", authChecker, (req, res, next) => {
         });
       }
     }).catch((err) => {
-      // console.log("err ", err);
       res.status(200).json({
         message: req.body.postId + "update failed",
         updated: "N"

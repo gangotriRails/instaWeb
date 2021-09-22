@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule} from '@angular/material/card'
 import { FormsModule ,ReactiveFormsModule} from '@angular/forms';
@@ -25,19 +23,19 @@ import { EditComponent } from './edit/edit.component';
 import { PostDialogComponent } from './main/post-dialog/post-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentsComponent } from './main/comments/comments.component';
+import { PostComponent } from './main/post/post.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    LoginComponent,
-    SignUpComponent,
     HeaderComponent,
     ProfileComponent,
     EditComponent,
     PostDialogComponent,
-    CommentsComponent
+    CommentsComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

@@ -10,16 +10,16 @@
           <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput name="fullName" ngModel type="text" placeholder="Full Name" #fullNameInput="ngModel" required text>
+            <input matInput name="fullName" ngModel type="text" pattern="(?=.*[a-z])(?=.*[A-Z]).{4,}" placeholder="Full Name" #fullNameInput="ngModel" required text>
             <mat-error *ngIf="fullNameInput.invalid">Please enter a valid name.</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput name="userName" ngModel type="text" placeholder="User Name" #userNameInput="ngModel" required text>
+            <input matInput name="userName" id="usrname" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}" ngModel type="text" placeholder="User Name" #userNameInput="ngModel" required text>
             <mat-error *ngIf="userNameInput.invalid">Please enter a valid userNameInput.</mat-error>
           </mat-form-field>
         <mat-form-field>
-          <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel"
-            required>
+          <input type="password" class="psw" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
           <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
         </mat-form-field>
         <button mat-raised-button class="submitButton" color="accent" type="submit">sign Up</button>
@@ -27,4 +27,13 @@
     </mat-card>
     <mat-card class="signUpCard">Have a account?<a routerLink="/login">Log In</a></mat-card>
   </div>
+</div>
+
+
+<div id="message" style="display:none">
+  <h3>Password must contain the following:</h3>
+  <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  <p id="number" class="invalid">A <b>number</b></p>
+  <p id="length" class="invalid">Minimum <b>8 characters</b></p>
 </div>
