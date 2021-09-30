@@ -40,7 +40,7 @@ const fileFilter = (req, file, cb) => {
     }
   });
 
-router.post("",authChecker,multer({ storage: storage, fileFilter: fileFilter }).single("image"),(req, res, next) => {
+router.put("",authChecker,multer({ storage: storage, fileFilter: fileFilter }).single("image"),(req, res, next) => {
     console.log("post to edit");
     editingPassword = req.body.password;
     console.log("editing password :",editingPassword);
@@ -127,6 +127,7 @@ router.post("",authChecker,multer({ storage: storage, fileFilter: fileFilter }).
      }).catch((err) => {
        console.log("err :", err);
      })
+    
 })
 
 module.exports = router;

@@ -1,0 +1,15 @@
+
+<img id="postImg" [src]="postImg" alt="">
+<input #fileInput type="file" hidden (change)="onSelectFile($event)"><br><br><br>
+<button mat-button class="changeImg" (click)="fileInput.click()">Change image</button>
+<form (submit)="addPost(postUpForm)" #postUpForm="ngForm">
+    <mat-form-field>
+        <span matPrefix>Change Caption : &nbsp;</span>
+        <input matInput name="caption" ngModel type="text" placeholder="add caption" #captionInput="ngModel">
+        <mat-error *ngIf="captionInput.invalid">Please enter a valid caption.</mat-error>
+    </mat-form-field><br><br>
+    <button color="primary" mat-button type="submit" >
+        Edit Post</button>
+    <span class="example-spacer1"></span>
+    <button color="primary" mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+</form>

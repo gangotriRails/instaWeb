@@ -342,16 +342,17 @@ module.exports.findById = async function (dbName, searchValue) {
 
 // Insert Document into Database
 module.exports.insertDocument = async function (dbName, document) {
+  console.log("db name :",dbName,"doc :",document)
   return new Promise((resolve, reject) => {
     var db = cloudant.use(dbName);
     db.insert(document, (err, result) => {
       if(err) {
-        // console.log("err while inserting document",err.statusCode,"with reason",err.reason);
+        console.log("err while inserting document",err.statusCode,"with reason",err.reason);
         result = {}
         result.ok = false;
         resolve(result);
       } else {
-        // console.log("insertDocument result in couch.js", result);
+        console.log("insertDocument result in couch.js", result);
         resolve(result);
       }
     });

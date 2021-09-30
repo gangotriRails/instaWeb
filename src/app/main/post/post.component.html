@@ -1,6 +1,18 @@
 <app-header></app-header>
 <br>
 <br>
+<button mat-stroked-button class="iconText" (click)="editPost()" >
+  <mat-icon class="icon"><span class="material-icons-outlined">
+    edit
+    </span></mat-icon>
+  <h5 class="text">edit</h5>
+</button>
+<button mat-stroked-button class="iconText" (click)="deletePost()">
+  <mat-icon class="icon"><span class="material-icons-outlined">
+    delete
+    </span></mat-icon>
+  <h5 class="text">delete</h5>
+</button>
 <mat-card class="example-card" *ngIf="isPost">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ profileUrl +')'" ></div>

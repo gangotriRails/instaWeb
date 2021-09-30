@@ -6,6 +6,11 @@ const userRoutes = require("./routes/user");
 const userListRoutes = require("./routes/usersList")
 const editRoutes = require("./routes/edit")
 const postRoutes = require("./routes/posts")
+const getPostById = require("./routes/getPostById")
+const getPostByUser = require("./routes/getPostByUser")
+const editPost = require('./routes/editPost')
+const getComments = require('./routes/getComments')
+
 
 
 const app = express();
@@ -13,6 +18,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/data", express.static(path.join("backend/data")));
+
 app.use("/", express.static(path.join(__dirname, "Insta-Web")));
 
 app.use((req, res, next) => {
@@ -34,6 +41,14 @@ app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/usersList", userListRoutes);
 app.use("/api/edit", editRoutes);
+app.use("/api/getPostById", getPostById);
+app.use("/api/getPostByUser", getPostByUser);
+app.use("/api/editPost", editPost);
+app.use("/api/editPost", editPost);
+app.use("/api/getComments", getComments);
+
+
+
 
 
 

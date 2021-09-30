@@ -5,6 +5,7 @@ import { EditComponent } from '../edit/edit.component';
 import { PostsService } from '../services/posts.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommentsComponent } from '../main/comments/comments.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Component({
@@ -29,15 +30,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userName = this.authService.getUserName();
-    this.userEmail = this.authService.getUserEmail();
+    const token = this.authService.getToken();
+    const helper = new JwtHelperService();
+    const decoded= helper.decodeToken(token);
+     console.log("emial :: ",decoded)
+     this.userEmail = decoded.userId.slice(17,decoded.length)
+    console.log("user email :" ,this.userEmail)
     var authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
-        this.userName = this.authService.getUserName();
-        this.fullName = "hi"
       });
+
     this.postsService.getUsers().then(res => {
       var allUsers :any[] = [];
       allUsers = res['userList']
@@ -45,24 +49,19 @@ export class ProfileComponent implements OnInit {
       for(let i=0;i< allUsers.length;i++){
         console.log("No :",i,"User :",allUsers[i].userName)
         console.log("userName :",this.userName)
-        if(allUsers[i].userName == this.userName){
+        if(allUsers[i].name == this.userEmail){
           this.fullName = allUsers[i].fullName;
-          this.url = allUsers[i].profile
+          this.url = allUsers[i].profile;
+        this.userName =  allUsers[i].userName
+
           console.log("fullName :",this.fullName);
           console.log("profile : ",this.url)
         }
       }
     })
     this.loadPost = 10;
-    this.postsService.getPost(this.loadPost).then(res => {
-      this.posts = res['postList']
-      for (let i = 0; i < this.posts.length; i++) {
-        if (this.posts[i].name == this.userName) {
-          this.allPosts.push(this.posts[i])
-          console.log("posts :::: ", this.allPosts)
-
-        }
-      }
+    this.postsService.getPostByUser(this.loadPost,this.userEmail).then(res => {
+      this.allPosts = res['postList']
     })
 
     this.postsService.commentChanged.subscribe(newComment => {

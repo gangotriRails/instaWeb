@@ -34,10 +34,6 @@ exports.userLogin = async (req, res, next) => {
               }
               res.status(200).json({
                 token: token,
-                expiresIn: 31536000,
-                email: userInfo.name,
-                userId: userInfo._id,
-                userName:userInfo.userName
               });
           }
         }

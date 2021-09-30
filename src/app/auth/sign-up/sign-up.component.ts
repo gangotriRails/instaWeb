@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { Subscription } from "rxjs";
 import { HtmlAstPath } from '@angular/compiler';
 import { AuthData } from '../auth-data.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,7 +13,7 @@ import { AuthData } from '../auth-data.model';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,private router: Router) { }
   private authStatusSub: Subscription;
   ngOnInit() {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
@@ -28,6 +29,11 @@ export class SignUpComponent implements OnInit {
     }
     this.isLoading = true;
     const authData: AuthData = { email: form.value.email,fullName:form.value.fullName,userName:form.value.userName,profile:"assets/images/default.png", password: form.value.password};
-    this.authService.createUser(authData);
+    this.authService.createUser(authData).then(
+      async (response) => {
+        console.log("Response", response)
+        this.router.navigate(["/login"]);
+      }
+    )
   }
 }

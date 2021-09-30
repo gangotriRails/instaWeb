@@ -1,0 +1,11 @@
+img{
+    height: 200px;
+    width: 200px;
+    float: left;
+}
+.changeImg{
+    float: left;
+}
+.example-spacer1 {
+    flex: 3 auto;
+  }

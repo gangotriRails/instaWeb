@@ -43,12 +43,17 @@ const storage = multer.diskStorage({
 
 
 router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }).single("image"), (req, res, next) => {
+  userEmail = req.query.email;
   userName = req.body.userName;
   profileUrl = req.body.profileImg;
   postUrl = req.body.postImg;
-  timestamp = req.body.timestamp
+  var today = new Date();
+  var date = String(today.getDate()).padStart(2, '0') + '-' + String(today.getMonth() + 1).padStart(2, '0')
+    + '-' + today.getFullYear();
+  var time = new Date();
+  var currentTime = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: '2-digit', hour12: true })
   caption = req.body.caption
-  couch.findUser("_users", userName).then(async (response) => {
+  couch.findUser("_users", userEmail).then(async (response) => {
     if (response.statusCode == 404) {
       return res.status(401).json({
         message: "User cant post because user not found"
@@ -56,19 +61,25 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
     } else {
       await couch.checkDatabase("post").then(async (dbStatus) => {
         const postInfo = {
-          // userId: "##########" + userName,
           name: req.body.userName,
+          email: req.body.email,
           profileUrl: profileUrl,
           postUrl: postUrl,
           caption: caption,
           like: [],
           comments: [],
-          timestamp: timestamp
+          date: date,
+          time: currentTime
         };
+        console.log("pst dbStatus ::::::", dbStatus)
+
+        // console.log("post :",postInfo)
         if (!dbStatus) {
           dbCreationStatus = await couch.createDatabase("post").then(status => {
+            console.log("pst status ::::::", status)
             if (status) {
               couch.insertDocument('post', postInfo).then(async (result) => {
+                console.log("pst posted ::::::", result)
                 if (result.ok == true) {
                   res.status(201).json({
                     message: "posted succeffully!",
@@ -95,6 +106,7 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
           });
         } else {
           couch.insertDocument('post', postInfo).then(async (result) => {
+            console.log("pst posted ::::::", result)
             if (result.ok == true) {
               res.status(201).json({
                 message: "posted succeffully!",
@@ -120,17 +132,20 @@ router.post("", authChecker, multer({ storage: storage, fileFilter: fileFilter }
 
 router.get("", authChecker, (req, res, next) => {
   var postCount = req.query.postCount;
-  console.log("getting posts",postCount);
+  console.log("getting posts", postCount);
 
   var postList = [];
-  var loadedPost = []
+  var loadedPost = [];
+  var sortedList = [];
   couch.checkDatabase('post').then(async (result) => {
     if (result) {
       await couch.getAllDocs('post').then(async (result) => {
-        for (let i = 0;i<result.rows.length; i++) {
+        for (let i = 0; i < result.rows.length; i++) {
+          delete result.rows[i].doc["_rev"];
           postList.push(result.rows[i].doc);
         }
-        loadedPost = postList.reverse().slice(0,postCount)
+        postList.sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
+        loadedPost = postList.slice(0, postCount)
         console.log("posts Lists", postList.length)
         console.log("loadedPost Lists ::::::::::", loadedPost.length)
         res.status(200).json({
@@ -144,7 +159,9 @@ router.get("", authChecker, (req, res, next) => {
     }
   }).catch((err) => {
   })
-})
+});
+
+
 
 router.put("", authChecker, (req, res, next) => {
   console.log("put request id", req.body.postId);
@@ -185,10 +202,10 @@ router.put("", authChecker, (req, res, next) => {
       if (result) {
         await couch.findById('post', req.body.postId).then(async (response) => {
           console.log("respose in fetched posts", response.documents.docs[0]);
-          console.log("lokkkeeeeeee",req.body.newLike)
+          console.log("lokkkeeeeeee", req.body.newLike)
           postInfo = response.documents.docs[0];
           postInfo.like = req.body.newLike;
-          console.log("like",req.body.newLike);
+          console.log("like", req.body.newLike);
           await couch.insertDocument('post', postInfo).then((result) => {
             console.log("insert page Document result", result);
             if (result.ok == true) {
@@ -221,5 +238,40 @@ router.put("", authChecker, (req, res, next) => {
     })
   }
 })
+
+
+router.delete("", (req, res, next) => {
+  console.log("req.query.userName", req.query.postId);
+  // console.log("req.params.deletingId", req.params.deleteUser);
+  const deletingId = req.query.postId
+  console.log("deletingId", deletingId);
+
+  couch.findById("post", deletingId).then((response) => {
+    console.log("user find", response.documents.docs[0]);
+    if (response.statusCode == 404) {
+      console.log("User not found");
+      res.status(500).json({
+        message: "User Deletion failed"
+      });
+    } else {
+      var postInfo = response.documents.docs[0];
+      console.log("user already exists", postInfo);
+      couch.deleteDocument("post", postInfo._id, postInfo._rev).then((response) => {
+        console.log("response of deleting ", response)
+        res.status(201).json({
+          message: "deletion succesfulll"
+        });
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }).catch((err) => {
+    console.log("err :", err);
+    res.status(500).json({
+      message: "User Deletion failed",
+    });
+  })    
+});
+
 
 module.exports = router;

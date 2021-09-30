@@ -25,11 +25,20 @@
   </mat-card>
   <div class="commentDiv">
     <mat-card class="commentsCard">
-      <div *ngFor=" let comment of comments">
-        <h3 class="userName">{{comment.userName}} - </h3>
-        <h4 class="commentList"> {{comment.newComment}}</h4><br>
-      </div>
-      <button mat-raised-button color="accent" *ngIf="!loadButton" (click)="loadMoreComments()">Load More</button>
+      <table>
+        <tr *ngFor=" let comment of comments">
+          <td><h3 class="userName">{{comment.userName}} - </h3></td>
+          <td><h4 class="commentList"> {{comment.newComment}}</h4></td>
+          <td>  <button mat-icon-button class="iconText" (click)="deleteComment(comment.id)">
+            <mat-icon class="icon"><span class="material-icons-outlined">
+              delete
+              </span></mat-icon>
+              </button></td>
+        </tr>
+       
+      </table>
+      
+      <!-- <button mat-raised-button color="accent" *ngIf="!loadButton" (click)="loadMoreComments()">Load More</button> -->
       <br>
     </mat-card>
     <div class="container">

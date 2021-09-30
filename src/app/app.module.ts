@@ -24,6 +24,11 @@ import { PostDialogComponent } from './main/post-dialog/post-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentsComponent } from './main/comments/comments.component';
 import { PostComponent } from './main/post/post.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { EditPostComponent } from './main/edit-post/edit-post.component';
+import { confirmationDeleteDialog } from './main/post/post.component';
+import { confirmationCommentDeleteDialog } from './main/comments/comments.component';
+
 
 
 @NgModule({
@@ -35,7 +40,10 @@ import { PostComponent } from './main/post/post.component';
     EditComponent,
     PostDialogComponent,
     CommentsComponent,
-    PostComponent
+    PostComponent,
+    EditPostComponent,
+    confirmationDeleteDialog,
+    confirmationCommentDeleteDialog
   ],
   imports: [
     BrowserModule,
@@ -56,7 +64,7 @@ import { PostComponent } from './main/post/post.component';
     MatDialogModule,
 
   ],
-  providers: [
+  providers: [JwtHelperService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

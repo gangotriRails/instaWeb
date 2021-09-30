@@ -10,7 +10,7 @@
     <mat-card-header>
       <div mat-card-avatar class="example-header-image" [style.backgroundImage]="'url('+ allPosts.profileUrl +')'" ></div>
       <mat-card-title>{{allPosts.name}}</mat-card-title>
-      <mat-card-subtitle>{{allPosts.timestamp}}</mat-card-subtitle>
+      <mat-card-subtitle>{{allPosts.date}}  {{allPosts.time}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image [src]="allPosts.postUrl" alt="Photo of a Shiba Inu">
     <mat-card-content>

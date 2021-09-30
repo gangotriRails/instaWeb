@@ -11,7 +11,6 @@ router.get("",authChecker, (req, res, next) => {
                 for (i = 1; i < result.rows.length; i++) {
                     delete result.rows[i].doc["_id"];
                     delete result.rows[i].doc["_rev"];
-                    delete result.rows[i].doc["name"];
                     delete result.rows[i].doc["roles"];
                     delete result.rows[i].doc["password_scheme"];
                     delete result.rows[i].doc["type"];
@@ -19,7 +18,7 @@ router.get("",authChecker, (req, res, next) => {
                     delete result.rows[i].doc["password_sha"];
                     userList.push(result.rows[i].doc);
                 }
-                console.log("userList :: ",userList)
+                // console.log("userList :: ",userList)
                 res.status(200).json({
                     userList: userList
                 });

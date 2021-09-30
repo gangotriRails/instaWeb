@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from '../auth/auth.service';
 import { PostsService } from '../services/posts.service';
 
@@ -13,22 +14,25 @@ import { PostsService } from '../services/posts.service';
 export class EditComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<EditComponent>, public authService: AuthService, private postsService: PostsService) { }
-  userIsAuthenticated = false;
   userName: string;
   userEmail: string;
   fullName: string;
+  userIsAuthenticated = false;
   url: string
 
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userName = this.authService.getUserName();
-    this.userEmail = this.authService.getUserEmail();
+    const token = this.authService.getToken();
+    const helper = new JwtHelperService();
+    const decoded= helper.decodeToken(token);
+     console.log("emial :: ",decoded)
+     this.userEmail = decoded.userId.slice(17,decoded.length)
+    console.log("user email :" ,this.userEmail)
     var authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
-        this.userName = this.authService.getUserName();
       });
       this.postsService.getUsers().then(res => {
         var allUsers :any[] = [];
@@ -37,9 +41,11 @@ export class EditComponent implements OnInit {
         for(let i=0;i< allUsers.length;i++){
           console.log("No :",i,"User :",allUsers[i].userName)
           console.log("userName :",this.userName)
-          if(allUsers[i].userName == this.userName){
+          if(allUsers[i].name == this.userEmail){
             this.fullName = allUsers[i].fullName;
-            this.url = allUsers[i].profile
+            this.url = allUsers[i].profile;
+        this.userName = allUsers[i].userName
+
             console.log("fullName :",this.fullName);
             console.log("profile : ",this.url)
           }
@@ -65,14 +71,18 @@ export class EditComponent implements OnInit {
       return;
     }
     let editData = new FormData();
-    editData.append('userName', this.userName);
+    editData.append('userName', this.userEmail);
     editData.append('url', this.url);
     editData.append('email', form.value.email);
     editData.append('bio', form.value.Bio);
     editData.append('phoneNumber', form.value.phoneNumber);
     editData.append('gender', form.value.gender);
     editData.append('password', form.value.password);
-    this.postsService.editProfile(editData);
+    this.postsService.editProfile(editData).then(
+       (response) => {
+        console.log("Response", response)
+      }
+    );
     this.dialogRef.close();
   }
 }

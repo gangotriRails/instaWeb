@@ -6,9 +6,14 @@ import { LoginComponent } from "./login/login.component";
 import { SignUpComponent } from "./sign-up/sign-up.component";
 import { AngularMaterialModule } from "../angular-material.module";
 import { AuthRoutingModule } from "./auth-routing.module";
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @NgModule({
   declarations: [LoginComponent, SignUpComponent],
-  imports: [CommonModule, AngularMaterialModule, FormsModule, AuthRoutingModule]
+  imports: [CommonModule, AngularMaterialModule, FormsModule, AuthRoutingModule],
+  providers: [
+    JwtHelperService
+  ],
 })
 export class AuthModule {}
